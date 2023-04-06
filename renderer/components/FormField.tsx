@@ -1,14 +1,21 @@
+import clsx from "clsx";
 import { HTMLProps } from "react";
 import { AiOutlineArrowRight } from "react-icons/ai";
 
 interface FormFieldProps extends HTMLProps<HTMLInputElement> {}
 
-export default function FormField({ ...inputProps }: FormFieldProps) {
+export default function FormField({
+  className,
+  ...inputProps
+}: FormFieldProps) {
   return (
     <div className="flex rounded">
       <input
         type="text"
-        className="inline-block p-2 outline-none pr-4 rounded-lg"
+        className={clsx(
+          "inline-block p-2 outline-none pr-4 rounded-lg w-full",
+          className
+        )}
         {...inputProps}
       />
       <button

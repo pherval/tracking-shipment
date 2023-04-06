@@ -1,7 +1,7 @@
 import React from "react";
 import { AiOutlineSwapRight } from "react-icons/ai";
 import { FaCircle, FaShippingFast } from "react-icons/fa";
-import ShippimentStatus from "./ShippimentStatus";
+import ShipmentStatus from "./ShipmentStatus";
 
 interface ShippingListItemProps {
   trackingNumber: string;
@@ -29,12 +29,12 @@ export default function ShippingListItem({
         </div>
         <div>
           <p className="font-bold">{trackingNumber}</p>
-          <p className="text-gray-400 flex justify-around items-center gap-3">
+          <p className="text-gray-400 flex items-center gap-1">
             {origin} <AiOutlineSwapRight /> {destination}
           </p>
         </div>
       </div>
-      <ShippimentStatus />
+      <ShipmentStatus />
     </div>
   );
 }

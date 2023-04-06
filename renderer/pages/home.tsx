@@ -3,6 +3,7 @@ import Box from "../components/Box";
 import FormField from "../components/FormField";
 import ShippingListItem from "../components/ShippingListItem";
 import { BsTrash } from "react-icons/bs";
+import ShipmentStatus from "../components/ShipmentStatus";
 
 interface Shipping {
   trackingNumber: string;
@@ -24,7 +25,7 @@ interface HomeProps {
 }
 
 function Home({ tracks }: HomeProps) {
-  const [tracking, setTracking] = useState<Shipping | null>(tracks?.[0]);
+  const [tracking, setTracking] = useState<Shipping | null>(null);
   const [text, setText] = useState<string>("");
   const [trackings, setTrackings] = useState(tracks);
 
@@ -63,6 +64,15 @@ function Home({ tracks }: HomeProps) {
     setText("");
   };
 
+  const selectItem = (shipment: Shipping) => {
+    if (shipment.trackingNumber === tracking?.trackingNumber) {
+      setTracking(null);
+      return;
+    }
+
+    setTracking(shipment);
+  };
+
   return (
     <div className="container">
       <Box className="bg-rose-300 p-5">
@@ -76,14 +86,23 @@ function Home({ tracks }: HomeProps) {
           />
         </form>
       </Box>
+
       <Box className="row-span-2 grid grid-rows-2">
-        <div className="p-7 bg-rose-200 rounded-2xl">
-          <div>{tracking?.trackingNumber}</div>
-        </div>
+        {tracking && (
+          <div className="p-7 bg-rose-200 rounded-2xl">
+            <div className="flex justify-between items-center  border-b pb-4 border-gry-300">
+              <p className="flex flex-col gap-1">
+                Tracking Number
+                <span className="font-bold">{tracking?.trackingNumber}</span>
+              </p>
+              <ShipmentStatus />
+            </div>
+          </div>
+        )}
         <div className="overflow-y-scroll p-4 flex flex-col gap-4">
           {trackings.map((track) => (
             <ShippingListItem
-              onClick={() => setTracking(track)}
+              onClick={() => selectItem(track)}
               key={track.trackingNumber}
               trackingNumber={track.trackingNumber}
               destination={track.destination}
@@ -92,6 +111,7 @@ function Home({ tracks }: HomeProps) {
           ))}
         </div>
       </Box>
+
       <Box className="row-span-3 col-start-2 row-start-1 bg-slate-200">
         <div className="absolute right-10 top-10 text-xl">
           {tracking && (
