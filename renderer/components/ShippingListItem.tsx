@@ -8,6 +8,7 @@ interface ShippingListItemProps {
   destination: String;
   origin: string;
   renderIcon?: React.ReactNode;
+  onClick?: () => void;
 }
 
 export default function ShippingListItem({
@@ -15,9 +16,13 @@ export default function ShippingListItem({
   trackingNumber,
   origin,
   destination,
+  onClick,
 }: ShippingListItemProps) {
   return (
-    <div className="flex justify-between items-center">
+    <div
+      className="flex justify-between items-center cursor-pointer"
+      onClick={onClick}
+    >
       <div className="flex gap-4">
         <div className="p-3 flex items-center justify-center bg-rose-300 rounded-xl text-xl">
           {renderIcon ? renderIcon : <FaShippingFast />}

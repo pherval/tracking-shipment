@@ -1,33 +1,116 @@
+import { useState } from "react";
 import Box from "../components/Box";
 import FormField from "../components/FormField";
-import { FaShippingFast } from "react-icons/fa";
 import ShippingListItem from "../components/ShippingListItem";
+import { BsTrash } from "react-icons/bs";
 
-function Home() {
+interface Shipping {
+  trackingNumber: string;
+  destination: string;
+  origin: string;
+}
+
+const tracks: Shipping[] = Array(2)
+  .fill({})
+  .map(() => ({
+    // gen random number with 13 digits
+    trackingNumber: "ABC" + Math.random().toString().slice(2, 11),
+    destination: "Paris",
+    origin: "Brasil",
+  }));
+
+interface HomeProps {
+  tracks: Shipping[];
+}
+
+function Home({ tracks }: HomeProps) {
+  const [tracking, setTracking] = useState<Shipping | null>(tracks?.[0]);
+  const [text, setText] = useState<string>("");
+  const [trackings, setTrackings] = useState(tracks);
+
+  const deleteShipment = () => {
+    if (tracking) {
+      setTrackings((items) =>
+        items.filter((item) => item.trackingNumber !== tracking.trackingNumber)
+      );
+
+      setTracking(trackings?.[0] ?? null);
+    }
+  };
+
+  const submit = (e) => {
+    e.preventDefault();
+
+    // TODO: usar um modal legal pra isso
+    if (trackings.find((t) => t.trackingNumber === text)) {
+      alert("Tracking number already exists");
+      return;
+    }
+
+    if (!text) {
+      alert("Empty tracking number");
+      return;
+    }
+
+    setTrackings((items) =>
+      items.concat({
+        trackingNumber: text,
+        destination: "Paris",
+        origin: "Brasil",
+      })
+    );
+
+    setText("");
+  };
+
   return (
     <div className="container">
       <Box className="bg-rose-300 p-5">
         <h1 className="text-lg font-bold text-gray-800">Add new package</h1>
         <h2>fill out the form and create a new package</h2>
-        <FormField placeholder="Enter tracking number" />
-      </Box>
-      <Box className=" row-span-2 grid grid-rows-2">
-        <div className="p-7 bg-rose-200 rounded-xl">
-          <div>tracking number</div>
-        </div>
-        <div className="overflow-y-scroll p-4">
-          <ShippingListItem
-            trackingNumber="PRF0123123"
-            destination="Paris"
-            origin="Brasil"
+        <form onSubmit={submit}>
+          <FormField
+            placeholder="Enter tracking number"
+            onChange={(e) => setText(e.target.value)}
+            value={text}
           />
+        </form>
+      </Box>
+      <Box className="row-span-2 grid grid-rows-2">
+        <div className="p-7 bg-rose-200 rounded-2xl">
+          <div>{tracking?.trackingNumber}</div>
+        </div>
+        <div className="overflow-y-scroll p-4 flex flex-col gap-4">
+          {trackings.map((track) => (
+            <ShippingListItem
+              onClick={() => setTracking(track)}
+              key={track.trackingNumber}
+              trackingNumber={track.trackingNumber}
+              destination={track.destination}
+              origin={track.origin}
+            />
+          ))}
         </div>
       </Box>
-      <Box className="row-span-3 col-start-2 row-start-1 bg-slate-500">
-        right
+      <Box className="row-span-3 col-start-2 row-start-1 bg-slate-200">
+        <div className="absolute right-10 top-10 text-xl">
+          {tracking && (
+            <button onClick={() => deleteShipment()}>
+              <BsTrash />
+            </button>
+          )}
+        </div>
       </Box>
     </div>
   );
 }
+
+export const getStaticProps = () => {
+  return {
+    props: {
+      tracks,
+    },
+  };
+};
 
 export default Home;

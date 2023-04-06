@@ -11,7 +11,10 @@ export default function FormField({ ...inputProps }: FormFieldProps) {
         className="inline-block p-2 outline-none pr-4 rounded-lg"
         {...inputProps}
       />
-      <button className="bg-black text-white p-3 text-sm rounded-lg -ml-2">
+      <button
+        type="submit"
+        className="bg-black text-white p-3 text-sm rounded-lg -ml-2"
+      >
         <AiOutlineArrowRight />
       </button>
     </div>
