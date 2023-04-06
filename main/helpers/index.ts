@@ -1,5 +1,6 @@
-import createWindow from './create-window';
+import { ipcMain } from "electron";
+import createWindow from "./create-window";
 
-export {
-  createWindow,
-};
+ipcMain.handle("ping", () => "pong");
+
+export { createWindow };

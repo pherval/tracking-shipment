@@ -1,49 +1,40 @@
-import { useState } from "react";
+import { FormEventHandler, useEffect, useState } from "react";
+import { BsTrash } from "react-icons/bs";
 import Box from "../components/Box";
 import FormField from "../components/FormField";
-import ShippingListItem from "../components/ShippingListItem";
-import { BsTrash } from "react-icons/bs";
 import ShipmentStatus from "../components/ShipmentStatus";
-
-interface Shipping {
-  trackingNumber: string;
-  destination: string;
-  origin: string;
-}
-
-const tracks: Shipping[] = Array(2)
-  .fill({})
-  .map(() => ({
-    // gen random number with 13 digits
-    trackingNumber: "ABC" + Math.random().toString().slice(2, 11),
-    destination: "Paris",
-    origin: "Brasil",
-  }));
+import ShippingListItem from "../components/ShippingListItem";
+import { Shipment } from "../shipment.interface";
+import { useShipmentsStorage } from "../use-shipments.storage";
+import electron from "electron";
+import path from "path";
+import { getItem } from "../storage";
+import { getShipments, saveShipments } from "../shipments.storage";
 
 interface HomeProps {
-  tracks: Shipping[];
+  tracks?: [];
 }
 
-function Home({ tracks }: HomeProps) {
-  const [tracking, setTracking] = useState<Shipping | null>(null);
+function Home({ tracks = [] }: HomeProps) {
+  const [selected, setSelected] = useState<Shipment | null>(null);
   const [text, setText] = useState<string>("");
-  const [trackings, setTrackings] = useState(tracks);
+  const [shipments, setShipments] = useShipmentsStorage(tracks);
 
   const deleteShipment = () => {
-    if (tracking) {
-      setTrackings((items) =>
-        items.filter((item) => item.trackingNumber !== tracking.trackingNumber)
+    if (selected) {
+      setShipments((items) =>
+        items?.filter((item) => item.trackingNumber !== selected.trackingNumber)
       );
 
-      setTracking(trackings?.[0] ?? null);
+      setSelected(shipments?.[0] ?? null);
     }
   };
 
-  const submit = (e) => {
+  const submit: FormEventHandler = (e) => {
     e.preventDefault();
 
     // TODO: usar um modal legal pra isso
-    if (trackings.find((t) => t.trackingNumber === text)) {
+    if (shipments.find((t) => t.trackingNumber === text)) {
       alert("Tracking number already exists");
       return;
     }
@@ -53,8 +44,8 @@ function Home({ tracks }: HomeProps) {
       return;
     }
 
-    setTrackings((items) =>
-      items.concat({
+    setShipments((items) =>
+      items?.concat({
         trackingNumber: text,
         destination: "Paris",
         origin: "Brasil",
@@ -64,12 +55,12 @@ function Home({ tracks }: HomeProps) {
     setText("");
   };
 
-  const selectItem = (shipment: Shipping) => {
-    setTracking(shipment);
+  const selectItem = (shipment: Shipment) => {
+    setSelected(shipment);
   };
 
   return (
-    <div className="container">
+    <>
       <Box className="bg-rose-300 p-5">
         <h1 className="text-lg font-bold text-gray-800">Add new package</h1>
         <h2>fill out the form and create a new package</h2>
@@ -83,20 +74,18 @@ function Home({ tracks }: HomeProps) {
       </Box>
 
       <Box className="row-span-2 grid grid-rows-2 gap-0">
-        {tracking && (
-          <div className="p-7 bg-rose-200 rounded-3xl z-50">
-            <div className="flex justify-between items-center  border-b pb-4 border-gry-300">
-              <p className="flex flex-col gap-1">
-                Tracking Number
-                <span className="font-bold">{tracking?.trackingNumber}</span>
-              </p>
-              <ShipmentStatus />
-            </div>
+        <div className="p-7 bg-rose-200 rounded-3xl z-50">
+          <div className="flex justify-between items-center  border-b pb-4 border-gry-300">
+            <p className="flex flex-col gap-1">
+              Tracking Number
+              <span className="font-bold">{selected?.trackingNumber}</span>
+            </p>
+            <ShipmentStatus />
           </div>
-        )}
+        </div>
         <div className="overflow-y-scroll shadow rounded-2xl -mt-10">
           <div className="p-4 flex flex-col gap-4 rounded-2xl mt-10">
-            {trackings.map((track) => (
+            {shipments.map((track) => (
               <ShippingListItem
                 onClick={() => selectItem(track)}
                 key={track.trackingNumber}
@@ -111,23 +100,21 @@ function Home({ tracks }: HomeProps) {
 
       <Box className="row-span-3 col-start-2 row-start-1 bg-slate-200">
         <div className="absolute right-10 top-10 text-xl">
-          {tracking && (
+          {selected && (
             <button onClick={() => deleteShipment()}>
               <BsTrash />
             </button>
           )}
         </div>
       </Box>
-    </div>
+    </>
   );
 }
 
-export const getStaticProps = () => {
+export async function getStaticProps() {
   return {
-    props: {
-      tracks,
-    },
+    props: {},
   };
-};
+}
 
 export default Home;

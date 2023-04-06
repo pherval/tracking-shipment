@@ -1,6 +1,6 @@
 import React from "react";
 import { AiOutlineSwapRight } from "react-icons/ai";
-import { FaCircle, FaShippingFast } from "react-icons/fa";
+import { FaShippingFast } from "react-icons/fa";
 import ShipmentStatus from "./ShipmentStatus";
 
 interface ShippingListItemProps {
