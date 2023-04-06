@@ -65,11 +65,6 @@ function Home({ tracks }: HomeProps) {
   };
 
   const selectItem = (shipment: Shipping) => {
-    if (shipment.trackingNumber === tracking?.trackingNumber) {
-      setTracking(null);
-      return;
-    }
-
     setTracking(shipment);
   };
 
@@ -87,9 +82,9 @@ function Home({ tracks }: HomeProps) {
         </form>
       </Box>
 
-      <Box className="row-span-2 grid grid-rows-2">
+      <Box className="row-span-2 grid grid-rows-2 gap-0">
         {tracking && (
-          <div className="p-7 bg-rose-200 rounded-2xl">
+          <div className="p-7 bg-rose-200 rounded-3xl z-50">
             <div className="flex justify-between items-center  border-b pb-4 border-gry-300">
               <p className="flex flex-col gap-1">
                 Tracking Number
@@ -99,16 +94,18 @@ function Home({ tracks }: HomeProps) {
             </div>
           </div>
         )}
-        <div className="overflow-y-scroll p-4 flex flex-col gap-4">
-          {trackings.map((track) => (
-            <ShippingListItem
-              onClick={() => selectItem(track)}
-              key={track.trackingNumber}
-              trackingNumber={track.trackingNumber}
-              destination={track.destination}
-              origin={track.origin}
-            />
-          ))}
+        <div className="overflow-y-scroll shadow rounded-2xl -mt-10">
+          <div className="p-4 flex flex-col gap-4 rounded-2xl mt-10">
+            {trackings.map((track) => (
+              <ShippingListItem
+                onClick={() => selectItem(track)}
+                key={track.trackingNumber}
+                trackingNumber={track.trackingNumber}
+                destination={track.destination}
+                origin={track.origin}
+              />
+            ))}
+          </div>
         </div>
       </Box>
 
