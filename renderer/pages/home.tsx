@@ -16,6 +16,7 @@ import Modal, { ModalContent } from "../components/Modal";
 import Button from "../components/Button";
 import { MdOutlineDescription } from "react-icons/md";
 import { TbTruckDelivery } from "react-icons/tb";
+import { IoCloseCircleSharp } from "react-icons/io5";
 
 interface HomeProps {
   tracks?: [];
@@ -23,46 +24,57 @@ interface HomeProps {
 
 function Home({ tracks = [] }: HomeProps) {
   const [selected, setSelected] = useState<Shipment | null>(null);
-  const [text, setText] = useState<string>("");
+  const [trackingNumber, setTrackingNumber] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [shipments, setShipments] = useShipmentsStorage(tracks);
   const [showSideBar, setShowSideBar] = useState(true);
   const [showModal, setShowModal] = useState(false);
 
+  const filteredShipments = shipments?.filter(
+    (s) =>
+      searchByKeword(searchTerm, s.trackingNumber) ||
+      searchByKeword(searchTerm, s.description ?? "")
+  );
+
   const deleteShipment = () => {
-    alert("deleting...");
+    if (selected) {
+      setShipments(
+        (items) =>
+          items?.filter(
+            (item) => item.trackingNumber !== selected.trackingNumber
+          ) ?? []
+      );
 
-    // if (selected) {
-    //   setShipments((items) =>
-    //     items?.filter((item) => item.trackingNumber !== selected.trackingNumber)
-    //   );
-
-    //   setSelected(shipments?.[0] ?? null);
-    // }
+      setSelected(null);
+    }
   };
 
   const submit: FormEventHandler = (e) => {
     e.preventDefault();
 
     // TODO: usar um modal legal pra isso
-    if (shipments.find((t) => t.trackingNumber === text)) {
+    if (shipments.find((t) => t.trackingNumber === trackingNumber)) {
       alert("Tracking number already exists");
       return;
     }
 
-    if (!text) {
+    if (!trackingNumber) {
       alert("Empty tracking number");
       return;
     }
 
-    setShipments((items) =>
-      items?.concat({
-        trackingNumber: text,
-        destination: "Paris",
-        origin: "Brasil",
-      })
+    setShipments(
+      (items) =>
+        items?.concat({
+          trackingNumber,
+          description,
+        }) ?? []
     );
 
-    setText("");
+    setTrackingNumber("");
+    setDescription("");
+    setShowModal(false);
   };
 
   const selectItem = (shipment: Shipment) => {
@@ -78,21 +90,25 @@ function Home({ tracks = [] }: HomeProps) {
     <>
       <Modal show={showModal} onClose={() => setShowModal(false)}>
         <ModalContent title="Add Tracking">
-          <div className="flex flex-col gap-2">
+          <form className="flex flex-col gap-2" onSubmit={submit}>
             <FormField
               placeholder="Tracking number"
               leftAdornment={<TbTruckDelivery />}
+              value={trackingNumber}
+              onChange={(e) => setTrackingNumber(e.target.value)}
             />
             <FormField
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               placeholder="Description"
               leftAdornment={<MdOutlineDescription />}
             />
-          </div>
+          </form>
           <div className="flex gap-2 justify-space-around items-center">
             <Button theme="secondary" onClick={() => setShowModal(false)}>
               Cancel
             </Button>
-            <Button onClick={() => setShowModal(false)}>Start Tracking</Button>
+            <Button onClick={submit}>Start Tracking</Button>
           </div>
         </ModalContent>
       </Modal>
@@ -101,22 +117,37 @@ function Home({ tracks = [] }: HomeProps) {
         <div className="px-6 mt-10 flex flex-col gap-6">
           <FormField
             placeholder="Search"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
             leftAdornment={<BiSearch />}
+            rightAdornment={
+              searchTerm.length > 0 && (
+                <button onClick={(e) => setSearchTerm("")}>
+                  <IoCloseCircleSharp className="text-slate-700" />
+                </button>
+              )
+            }
           ></FormField>
           <div>
-            {shipments?.map((shipment, index) => (
-              <div className="flex flex-col" key={shipment.trackingNumber}>
-                <ShippingListItem
-                  description="Speaker B&O"
-                  selected={
-                    shipment.trackingNumber === selected?.trackingNumber
-                  }
-                  trackingNumber={shipment.trackingNumber}
-                  onClick={() => selectItem(shipment)}
-                />
-                {<Divider />}
+            {filteredShipments?.length === 0 ? (
+              <div className="flex items-center justify-center grow">
+                no results
               </div>
-            ))}
+            ) : (
+              filteredShipments?.map((shipment, index) => (
+                <div className="flex flex-col" key={shipment.trackingNumber}>
+                  <ShippingListItem
+                    description={shipment.description}
+                    selected={
+                      shipment.trackingNumber === selected?.trackingNumber
+                    }
+                    trackingNumber={shipment.trackingNumber}
+                    onClick={() => selectItem(shipment)}
+                  />
+                  {<Divider />}
+                </div>
+              ))
+            )}
           </div>
         </div>
         <div className="py-3 px-8 border-t shadow-md border-t-gray-200">
@@ -168,5 +199,8 @@ export async function getStaticProps() {
     props: {},
   };
 }
+
+const searchByKeword = (term: string, field: string) =>
+  new RegExp(term, "ig").test(field);
 
 export default Home;
