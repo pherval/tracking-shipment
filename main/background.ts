@@ -1,6 +1,7 @@
-import { app } from "electron";
+import { Menu, app } from "electron";
 import serve from "electron-serve";
 import { createWindow } from "./helpers";
+import createMenu from "./helpers/create-menu";
 
 const isProd: boolean = process.env.NODE_ENV === "production";
 
@@ -17,6 +18,8 @@ if (isProd) {
     width: 1000,
     height: 600,
   });
+
+  Menu.setApplicationMenu(createMenu());
 
   if (isProd) {
     await mainWindow.loadURL("app://./home.html");

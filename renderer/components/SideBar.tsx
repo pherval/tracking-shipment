@@ -1,5 +1,3 @@
-import React from "react";
-
 interface SideBarProps {
   children: React.ReactNode;
   showSideBar?: boolean;
