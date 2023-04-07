@@ -120,12 +120,14 @@ function Home({ tracks = [] }: HomeProps) {
               <TbLayoutSidebarRightCollapse />
             )}
           </button>
-          <button
-            onClick={() => deleteShipment()}
-            className="text-red-500 font-bold text-lg"
-          >
-            <FiMinusCircle />
-          </button>
+          {selected && (
+            <button
+              onClick={() => deleteShipment()}
+              className="text-red-500 font-bold text-lg"
+            >
+              <FiMinusCircle />
+            </button>
+          )}
         </div>
       </div>
     </>
