@@ -13,7 +13,7 @@ export default function Button({
     <button
       className={clsx(
         themes[theme],
-        "p-2 rounded-lg px-6 font-medium",
+        "p-2 rounded-lg px-6 font-medium text-sm",
         className
       )}
       {...btnProps}

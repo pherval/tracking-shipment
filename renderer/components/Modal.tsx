@@ -45,19 +45,24 @@ export default function Modal({
 
 interface ModalContentProps {
   children: React.ReactNode;
-  onClose?: () => void;
+  title: string;
 }
 export function ModalContent({
-  onClose,
+  title,
   children,
 }: ModalContentProps): JSX.Element {
+  const context = useContext(ModalContext);
+
+  if (!context) throw new Error("ModalContent ");
+
   return (
     <div
-      className="p-5 bg-white shadow-xl rounded-xl text-black relative flex flex-col gap-6"
+      className="p-5 bg-white shadow-xl rounded-xl text-black relative flex flex-col gap-6 text-sm"
       onClick={(e) => {
         e.stopPropagation();
       }}
     >
+      <h1 className="text-sm text-center font-bold">{title}</h1>
       {children}
     </div>
   );

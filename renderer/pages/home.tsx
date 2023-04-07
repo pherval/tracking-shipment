@@ -14,6 +14,8 @@ import { Shipment } from "../shipment.interface";
 import { useShipmentsStorage } from "../use-shipments.storage";
 import Modal, { ModalContent } from "../components/Modal";
 import Button from "../components/Button";
+import { MdOutlineDescription } from "react-icons/md";
+import { TbTruckDelivery } from "react-icons/tb";
 
 interface HomeProps {
   tracks?: [];
@@ -75,11 +77,20 @@ function Home({ tracks = [] }: HomeProps) {
   return (
     <>
       <Modal show={showModal} onClose={() => setShowModal(false)}>
-        <ModalContent>
-          <h1 className="text-sm text-center font-bold">Add Tracking</h1>
+        <ModalContent title="Add Tracking">
+          <div className="flex flex-col gap-2">
+            <FormField
+              placeholder="Tracking number"
+              leftAdornment={<TbTruckDelivery />}
+            />
+            <FormField
+              placeholder="Description"
+              leftAdornment={<MdOutlineDescription />}
+            />
+          </div>
           <div className="flex gap-2 justify-space-around items-center">
             <Button theme="secondary" onClick={() => setShowModal(false)}>
-              Cancelar
+              Cancel
             </Button>
             <Button onClick={() => setShowModal(false)}>Start Tracking</Button>
           </div>
