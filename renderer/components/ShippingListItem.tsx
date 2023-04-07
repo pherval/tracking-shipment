@@ -20,8 +20,8 @@ export default function ShippingListItem({
   return (
     <div
       className={clsx(
-        "flex justify-between items-center cursor-pointer px-3 py-4 rounded-xl text-slate-400 hover:bg-slate-100",
-        selected && "bg-blue-500 hover:bg-blue-600 text-slate-100",
+        "flex justify-between items-center cursor-pointer px-3 py-4 rounded-xl text-slate-400 ",
+        selected && "bg-blue-500 hover:bg-blue-600 text-white",
         className
       )}
       onClick={onClick}

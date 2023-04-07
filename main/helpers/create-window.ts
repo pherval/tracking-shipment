@@ -78,9 +78,11 @@ export default (
       contextIsolation: false,
       ...options.webPreferences,
     },
-    // transparent: true,
     frame: false,
     titleBarStyle: "hidden",
+    // transparent: true, // Make the window transparent
+    // vibrancy: "under-window",
+    vibrancy: "titlebar",
   };
   win = new BrowserWindow(browserOptions);
 

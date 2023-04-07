@@ -30,7 +30,10 @@ export default function FormField({
       <input
         ref={inputRef}
         type="text"
-        className={clsx("inline-block outline-none bg-slate-200", className)}
+        className={clsx(
+          "inline-block w-full outline-none bg-slate-200",
+          className
+        )}
         {...inputProps}
       />
       <div className="flex gap-2 justify-around items-center text-lg text-slate-500">

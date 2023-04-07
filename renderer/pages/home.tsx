@@ -1,12 +1,17 @@
+import clsx from "clsx";
 import { FormEventHandler, useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { FiMinusCircle, FiPlus } from "react-icons/fi";
-import { TbSeparatorVertical } from "react-icons/tb";
+import {
+  TbLayoutSidebarLeftCollapse,
+  TbLayoutSidebarRightCollapse,
+} from "react-icons/tb";
+import Divider from "../components/Divider";
 import FormField from "../components/FormField";
 import ShippingListItem from "../components/ShippingListItem";
+import SideBar from "../components/SideBar";
 import { Shipment } from "../shipment.interface";
 import { useShipmentsStorage } from "../use-shipments.storage";
-import Divider from "../components/Divider";
 
 interface HomeProps {
   tracks?: [];
@@ -16,6 +21,7 @@ function Home({ tracks = [] }: HomeProps) {
   const [selected, setSelected] = useState<Shipment | null>(null);
   const [text, setText] = useState<string>("");
   const [shipments, setShipments] = useShipmentsStorage(tracks);
+  const [showSideBar, setShowSideBar] = useState(true);
 
   const deleteShipment = () => {
     alert("deleting...");
@@ -65,7 +71,7 @@ function Home({ tracks = [] }: HomeProps) {
 
   return (
     <>
-      <div className=" flex flex-col justify-between">
+      <SideBar showSideBar={showSideBar}>
         <div className="px-6 mt-10 flex flex-col gap-6">
           <FormField
             placeholder="Search"
@@ -87,23 +93,32 @@ function Home({ tracks = [] }: HomeProps) {
             ))}
           </div>
         </div>
-        <div className="py-3 px-8 border-t">
-          <button className="flex gap-1 items-center text-sm">
+        <div className="py-3 px-8 border-t shadow-md border-t-gray-200">
+          <button className="flex gap-1 items-center text-sm text-slate-500 font-light">
             <FiPlus></FiPlus>
             Add Shipment
           </button>
         </div>
-      </div>
-      <div className="bg-slate-100 flex flex-col justify-between">
+      </SideBar>
+
+      <div
+        className={clsx(
+          "bg-neutral-100 flex flex-col justify-between shadow-inner flex-grow"
+        )}
+      >
         <div className="p-6">
           <h1 className="text-center text-xl font-bold">
             {selected?.trackingNumber}
           </h1>
         </div>
 
-        <div className="py-3 px-8 border-t flex justify-center gap-12 mb-0.5">
-          <button>
-            <TbSeparatorVertical />
+        <div className="py-3 px-8 flex justify-center gap-12 border-t shadow-md border-t-slate-200 text-xl">
+          <button onClick={() => setShowSideBar(!showSideBar)}>
+            {showSideBar ? (
+              <TbLayoutSidebarLeftCollapse />
+            ) : (
+              <TbLayoutSidebarRightCollapse />
+            )}
           </button>
           <button
             onClick={() => deleteShipment()}

@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import styles from "./Layout.module.scss";
 
 interface LayoutProps {
@@ -5,5 +6,7 @@ interface LayoutProps {
 }
 
 export default function Layout({ children }: LayoutProps) {
-  return <div className={styles.container}>{children}</div>;
+  return (
+    <div className={clsx(styles.container, "flex h-screen")}>{children}</div>
+  );
 }
