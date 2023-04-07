@@ -1,22 +1,21 @@
 import clsx from "clsx";
-import { HTMLProps, MouseEventHandler, useRef } from "react";
+import { HTMLProps, MouseEventHandler, forwardRef, useRef } from "react";
 import { AiOutlineArrowRight } from "react-icons/ai";
 
 interface FormFieldProps extends HTMLProps<HTMLInputElement> {
   leftAdornment?: React.ReactNode;
   rightAdornment?: React.ReactNode;
+  clearable?: boolean;
 }
 
-export default function FormField({
-  leftAdornment,
-  rightAdornment,
-  className,
-  ...inputProps
-}: FormFieldProps) {
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  const onClick: MouseEventHandler = () => {
-    inputRef.current?.focus();
+export default forwardRef<HTMLInputElement, FormFieldProps>(function FormField(
+  { clearable, leftAdornment, rightAdornment, className, ...inputProps },
+  ref
+) {
+  const onClick: MouseEventHandler<HTMLDivElement> = (e) => {
+    if (ref) {
+      (ref as any).current?.focus();
+    }
   };
 
   return (
@@ -28,7 +27,7 @@ export default function FormField({
         {leftAdornment}
       </div>
       <input
-        ref={inputRef}
+        ref={ref}
         type="text"
         className={clsx(
           "inline-block w-full outline-none bg-slate-200",
@@ -41,4 +40,4 @@ export default function FormField({
       </div>
     </div>
   );
-}
+});

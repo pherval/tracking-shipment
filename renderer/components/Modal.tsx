@@ -1,14 +1,6 @@
-import {
-  Dispatch,
-  MouseEventHandler,
-  SetStateAction,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { MouseEventHandler, createContext, useContext } from "react";
 import { createPortal } from "react-dom";
-import { GrClose } from "react-icons/gr";
+import { useShortcut } from "../use-shortcut";
 
 interface ModalProps {
   show: boolean;
@@ -25,6 +17,12 @@ export default function Modal({
   const handleClick: MouseEventHandler = (e) => {
     onClose?.();
   };
+
+  useShortcut((e) => {
+    if (e.key === "Escape" && show) {
+      onClose?.();
+    }
+  });
 
   if (!show) return null;
 

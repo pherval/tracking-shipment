@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { FormEventHandler, useState } from "react";
+import { FormEventHandler, useEffect, useRef, useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { FiMinusCircle, FiPlus } from "react-icons/fi";
 import {
@@ -17,6 +17,8 @@ import Button from "../components/Button";
 import { MdOutlineDescription } from "react-icons/md";
 import { TbTruckDelivery } from "react-icons/tb";
 import { IoCloseCircleSharp } from "react-icons/io5";
+import { useShortcut } from "../use-shortcut";
+import electron from "electron";
 
 interface HomeProps {
   tracks?: [];
@@ -30,6 +32,22 @@ function Home({ tracks = [] }: HomeProps) {
   const [shipments, setShipments] = useShipmentsStorage(tracks);
   const [showSideBar, setShowSideBar] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const modalRef = useRef<HTMLInputElement>(null);
+
+  useShortcut((e) => {
+    // TODO: melhorar para outras plataformas e usar atalho local do electron
+    if (e.metaKey && e.code === "KeyN") {
+      setShowModal(true);
+      modalRef.current?.focus();
+    }
+  });
+
+  useShortcut((e) => {
+    if (e.code === "Escape") {
+      setSearchTerm("");
+    }
+  }, inputRef?.current);
 
   const filteredShipments = shipments?.filter(
     (s) =>
@@ -86,6 +104,8 @@ function Home({ tracks = [] }: HomeProps) {
     setSelected(shipment);
   };
 
+  // limpar modal quando fecha ele
+
   return (
     <>
       <Modal show={showModal} onClose={() => setShowModal(false)}>
@@ -95,6 +115,7 @@ function Home({ tracks = [] }: HomeProps) {
               placeholder="Tracking number"
               leftAdornment={<TbTruckDelivery />}
               value={trackingNumber}
+              ref={modalRef}
               onChange={(e) => setTrackingNumber(e.target.value)}
             />
             <FormField
@@ -118,6 +139,7 @@ function Home({ tracks = [] }: HomeProps) {
           <FormField
             placeholder="Search"
             value={searchTerm}
+            ref={inputRef}
             onChange={(e) => setSearchTerm(e.target.value)}
             leftAdornment={<BiSearch />}
             rightAdornment={
