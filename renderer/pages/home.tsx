@@ -12,6 +12,8 @@ import ShippingListItem from "../components/ShippingListItem";
 import SideBar from "../components/SideBar";
 import { Shipment } from "../shipment.interface";
 import { useShipmentsStorage } from "../use-shipments.storage";
+import Modal, { ModalContent } from "../components/Modal";
+import Button from "../components/Button";
 
 interface HomeProps {
   tracks?: [];
@@ -22,6 +24,7 @@ function Home({ tracks = [] }: HomeProps) {
   const [text, setText] = useState<string>("");
   const [shipments, setShipments] = useShipmentsStorage(tracks);
   const [showSideBar, setShowSideBar] = useState(true);
+  const [showModal, setShowModal] = useState(false);
 
   const deleteShipment = () => {
     alert("deleting...");
@@ -71,6 +74,18 @@ function Home({ tracks = [] }: HomeProps) {
 
   return (
     <>
+      <Modal show={showModal} onClose={() => setShowModal(false)}>
+        <ModalContent>
+          <h1 className="text-sm text-center font-bold">Add Tracking</h1>
+          <div className="flex gap-2 justify-space-around items-center">
+            <Button theme="secondary" onClick={() => setShowModal(false)}>
+              Cancelar
+            </Button>
+            <Button onClick={() => setShowModal(false)}>Start Tracking</Button>
+          </div>
+        </ModalContent>
+      </Modal>
+
       <SideBar showSideBar={showSideBar}>
         <div className="px-6 mt-10 flex flex-col gap-6">
           <FormField
@@ -94,7 +109,10 @@ function Home({ tracks = [] }: HomeProps) {
           </div>
         </div>
         <div className="py-3 px-8 border-t shadow-md border-t-gray-200">
-          <button className="flex gap-1 items-center text-sm text-slate-500 font-light">
+          <button
+            className="flex gap-1 items-center text-sm text-slate-500 font-light"
+            onClick={() => setShowModal(true)}
+          >
             <FiPlus></FiPlus>
             Add Shipment
           </button>
