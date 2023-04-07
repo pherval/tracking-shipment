@@ -2,9 +2,8 @@ import { FaCircle } from "react-icons/fa";
 
 export default function ShipmentStatus() {
   return (
-    <div className="py-1 px-2 border rounded-lg m-0 text-sm border-slate-800 text-slate-800 flex gap-2 items-center">
-      <FaCircle className="text-green-400" fontSize={10} />
-      In Transit
+    <div className="p-2 px-3 bg-white text-blue-500 border rounded-full text-sm ">
+      9 days
     </div>
   );
 }

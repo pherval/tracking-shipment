@@ -7,10 +7,7 @@ interface BoxProps extends React.HTMLProps<HTMLDivElement> {
 
 export default function Box({ children, className, ...divProps }: BoxProps) {
   return (
-    <div
-      className={clsx("rounded-xl flex flex-col gap-5", className)}
-      {...divProps}
-    >
+    <div className={clsx("rounded-xl flex flex-col", className)} {...divProps}>
       {children}
     </div>
   );

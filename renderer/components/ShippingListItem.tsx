@@ -1,38 +1,36 @@
-import React from "react";
-import { AiOutlineSwapRight } from "react-icons/ai";
-import { FaShippingFast } from "react-icons/fa";
+import clsx from "clsx";
 import ShipmentStatus from "./ShipmentStatus";
+import { capitalize } from "../utils";
 
 interface ShippingListItemProps {
   trackingNumber: string;
-  destination: String;
-  origin: string;
-  renderIcon?: React.ReactNode;
+  description?: string;
+  selected?: boolean;
   onClick?: () => void;
+  className?: string;
 }
 
 export default function ShippingListItem({
-  renderIcon,
   trackingNumber,
-  origin,
-  destination,
+  selected,
+  description = "",
+  className,
   onClick,
 }: ShippingListItemProps) {
   return (
     <div
-      className="flex justify-between items-center cursor-pointer"
+      className={clsx(
+        "flex justify-between items-center cursor-pointer px-3 py-4 rounded-xl text-slate-400 hover:bg-slate-100",
+        selected && "bg-blue-500 hover:bg-blue-600 text-slate-100",
+        className
+      )}
       onClick={onClick}
     >
-      <div className="flex gap-4">
-        <div className="p-3 flex items-center justify-center bg-rose-300 rounded-xl text-xl">
-          {renderIcon ? renderIcon : <FaShippingFast />}
-        </div>
-        <div>
-          <p className="font-bold">{trackingNumber}</p>
-          <p className="text-gray-400 flex items-center gap-1">
-            {origin} <AiOutlineSwapRight /> {destination}
-          </p>
-        </div>
+      <div className="flex flex-col gap text-sm">
+        <p className="text-xs">{trackingNumber.toUpperCase()}</p>
+        <p className={clsx("font-medium", !selected && "text-black")}>
+          {capitalize(description)}
+        </p>
       </div>
       <ShipmentStatus />
     </div>

@@ -12,6 +12,10 @@
   box-sizing: border-box;
 }
 
+body {
+  -webkit-app-region: drag;
+}
+
 .container {
   display: grid;
   grid-template-columns: repeat(2, calc(50vw - 1.5rem));

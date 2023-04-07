@@ -1,15 +1,12 @@
-import { FormEventHandler, useEffect, useState } from "react";
-import { BsTrash } from "react-icons/bs";
-import Box from "../components/Box";
+import { FormEventHandler, useState } from "react";
+import { BiSearch } from "react-icons/bi";
+import { FiMinusCircle, FiPlus } from "react-icons/fi";
+import { TbSeparatorVertical } from "react-icons/tb";
 import FormField from "../components/FormField";
-import ShipmentStatus from "../components/ShipmentStatus";
 import ShippingListItem from "../components/ShippingListItem";
 import { Shipment } from "../shipment.interface";
 import { useShipmentsStorage } from "../use-shipments.storage";
-import electron from "electron";
-import path from "path";
-import { getItem } from "../storage";
-import { getShipments, saveShipments } from "../shipments.storage";
+import Divider from "../components/Divider";
 
 interface HomeProps {
   tracks?: [];
@@ -21,13 +18,15 @@ function Home({ tracks = [] }: HomeProps) {
   const [shipments, setShipments] = useShipmentsStorage(tracks);
 
   const deleteShipment = () => {
-    if (selected) {
-      setShipments((items) =>
-        items?.filter((item) => item.trackingNumber !== selected.trackingNumber)
-      );
+    alert("deleting...");
 
-      setSelected(shipments?.[0] ?? null);
-    }
+    // if (selected) {
+    //   setShipments((items) =>
+    //     items?.filter((item) => item.trackingNumber !== selected.trackingNumber)
+    //   );
+
+    //   setSelected(shipments?.[0] ?? null);
+    // }
   };
 
   const submit: FormEventHandler = (e) => {
@@ -56,57 +55,64 @@ function Home({ tracks = [] }: HomeProps) {
   };
 
   const selectItem = (shipment: Shipment) => {
+    if (selected?.trackingNumber === shipment.trackingNumber) {
+      setSelected(null);
+      return;
+    }
+
     setSelected(shipment);
   };
 
   return (
     <>
-      <Box className="bg-rose-300 p-5">
-        <h1 className="text-lg font-bold text-gray-800">Add new package</h1>
-        <h2>fill out the form and create a new package</h2>
-        <form onSubmit={submit}>
+      <div className=" flex flex-col justify-between">
+        <div className="px-6 mt-10 flex flex-col gap-6">
           <FormField
-            placeholder="Enter tracking number"
-            onChange={(e) => setText(e.target.value)}
-            value={text}
-          />
-        </form>
-      </Box>
-
-      <Box className="row-span-2 grid grid-rows-2 gap-0">
-        <div className="p-7 bg-rose-200 rounded-3xl z-50">
-          <div className="flex justify-between items-center  border-b pb-4 border-gry-300">
-            <p className="flex flex-col gap-1">
-              Tracking Number
-              <span className="font-bold">{selected?.trackingNumber}</span>
-            </p>
-            <ShipmentStatus />
-          </div>
-        </div>
-        <div className="overflow-y-scroll shadow rounded-2xl -mt-10">
-          <div className="p-4 flex flex-col gap-4 rounded-2xl mt-10">
-            {shipments.map((track) => (
-              <ShippingListItem
-                onClick={() => selectItem(track)}
-                key={track.trackingNumber}
-                trackingNumber={track.trackingNumber}
-                destination={track.destination}
-                origin={track.origin}
-              />
+            placeholder="Search"
+            leftAdornment={<BiSearch />}
+          ></FormField>
+          <div>
+            {shipments?.map((shipment, index) => (
+              <div className="flex flex-col" key={shipment.trackingNumber}>
+                <ShippingListItem
+                  description="Speaker B&O"
+                  selected={
+                    shipment.trackingNumber === selected?.trackingNumber
+                  }
+                  trackingNumber={shipment.trackingNumber}
+                  onClick={() => selectItem(shipment)}
+                />
+                {<Divider />}
+              </div>
             ))}
           </div>
         </div>
-      </Box>
-
-      <Box className="row-span-3 col-start-2 row-start-1 bg-slate-200">
-        <div className="absolute right-10 top-10 text-xl">
-          {selected && (
-            <button onClick={() => deleteShipment()}>
-              <BsTrash />
-            </button>
-          )}
+        <div className="py-3 px-8 border-t">
+          <button className="flex gap-1 items-center text-sm">
+            <FiPlus></FiPlus>
+            Add Shipment
+          </button>
         </div>
-      </Box>
+      </div>
+      <div className="bg-slate-100 flex flex-col justify-between">
+        <div className="p-6">
+          <h1 className="text-center text-xl font-bold">
+            {selected?.trackingNumber}
+          </h1>
+        </div>
+
+        <div className="py-3 px-8 border-t flex justify-center gap-12 mb-0.5">
+          <button>
+            <TbSeparatorVertical />
+          </button>
+          <button
+            onClick={() => deleteShipment()}
+            className="text-red-500 font-bold text-lg"
+          >
+            <FiMinusCircle />
+          </button>
+        </div>
+      </div>
     </>
   );
 }
