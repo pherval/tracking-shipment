@@ -49,12 +49,6 @@ function Home({ tracks = [] }: HomeProps) {
     }
   });
 
-  useShortcut((e) => {
-    if (e.code === "Escape") {
-      setSearchTerm("");
-    }
-  }, inputRef?.current);
-
   const filteredShipments = shipments?.filter(
     (s) =>
       searchByKeword(searchTerm, s.trackingNumber) ||
@@ -148,13 +142,8 @@ function Home({ tracks = [] }: HomeProps) {
             ref={inputRef}
             onChange={(e) => setSearchTerm(e.target.value)}
             leftAdornment={<BiSearch />}
-            rightAdornment={
-              searchTerm.length > 0 && (
-                <button onClick={(e) => setSearchTerm("")}>
-                  <IoCloseCircleSharp className="text-slate-700" />
-                </button>
-              )
-            }
+            clearable
+            onClear={() => setSearchTerm("")}
           ></FormField>
           <motion.div>
             <AnimatePresence>
