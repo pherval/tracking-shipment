@@ -36,6 +36,12 @@ function Home({ tracks = [] }: HomeProps) {
   const modalRef = useRef<HTMLInputElement>(null);
 
   useShortcut((e) => {
+    if (e.metaKey && e.code === "KeyF") {
+      inputRef.current?.focus();
+    }
+  });
+
+  useShortcut((e) => {
     // TODO: melhorar para outras plataformas e usar atalho local do electron
     if (e.metaKey && e.code === "KeyN") {
       setShowModal(true);
