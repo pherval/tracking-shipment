@@ -16,6 +16,7 @@
     "electron-store": "^8.1.0",
     "framer-motion": "^10.11.2",
     "luxon": "^3.3.0",
+    "react-hook-form": "^7.43.9",
     "react-icons": "^4.8.0",
     "react-resizable": "^3.0.5"
   },

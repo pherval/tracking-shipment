@@ -1,17 +1,13 @@
-import { FormEventHandler, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { BiSearch } from "react-icons/bi";
-import { FiMinusCircle, FiPlus } from "react-icons/fi";
-import { MdOutlineDescription } from "react-icons/md";
+import { FiMinusCircle } from "react-icons/fi";
 import { RiEditLine } from "react-icons/ri";
-import { TbTruckDelivery } from "react-icons/tb";
-import Button from "../components/Button";
 import FormField from "../components/FormField";
+import { Details, SideBar } from "../components/Layout";
 import List from "../components/List";
-import { ModalContent, Modal } from "../components/modal";
 import ShippingListItem from "../components/ShippingListItem";
 import { useShipmentsStorage } from "../hooks";
 import { useShortcut } from "../hooks/use-shortcut";
-import { Details, SideBar } from "../components/Layout";
 import type { Shipment } from "../shipment.interface";
 
 interface HomeProps {
@@ -20,13 +16,9 @@ interface HomeProps {
 
 function Home({ tracks = [] }: HomeProps) {
   const [selected, setSelected] = useState<Shipment | null>(null);
-  const [trackingNumber, setTrackingNumber] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [shipments, setShipments] = useShipmentsStorage(tracks);
-  const [showModal, setShowModal] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const modalRef = useRef<HTMLInputElement>(null);
 
   useShortcut(
     () => {
@@ -40,14 +32,15 @@ function Home({ tracks = [] }: HomeProps) {
     }
   );
 
-  // TODO: melhorar para outras plataformas e usar atalho local do electron
-  useShortcut(() => setShowModal(true), {
-    shortcut: { code: "KeyN", metaKey: true },
-  });
+  const filterTracking = ({ trackingNumber, description }: Shipment) => {
+    const searchByKeword = (term: string, field: string) =>
+      new RegExp(term, "ig").test(field);
 
-  const filterTracking = (s: Shipment) =>
-    searchByKeword(searchTerm, s.trackingNumber) ||
-    searchByKeword(searchTerm, s.description ?? "");
+    return [
+      searchByKeword(searchTerm, trackingNumber),
+      searchByKeword(searchTerm, description ?? ""),
+    ].some((v) => v);
+  };
 
   const edit = () => {
     alert("not implemented yet");
@@ -66,9 +59,7 @@ function Home({ tracks = [] }: HomeProps) {
     }
   };
 
-  const submit: FormEventHandler = (e) => {
-    e.preventDefault();
-
+  const createTracking = ({ trackingNumber, description }: Shipment) => {
     // TODO: usar um modal legal pra isso
     if (shipments.find((t) => t.trackingNumber === trackingNumber)) {
       alert("Tracking number already exists");
@@ -89,10 +80,6 @@ function Home({ tracks = [] }: HomeProps) {
           // startDate: new Date(),
         }) ?? []
     );
-
-    setTrackingNumber("");
-    setDescription("");
-    setShowModal(false);
   };
 
   const selectItem = (shipment: Shipment) => {
@@ -108,37 +95,7 @@ function Home({ tracks = [] }: HomeProps) {
 
   return (
     <>
-      <Modal
-        show={showModal}
-        onClose={() => setShowModal(false)}
-        onOpen={() => modalRef.current?.focus?.()}
-      >
-        <ModalContent title="Add Tracking">
-          <form className="flex flex-col gap-2" onSubmit={submit}>
-            <FormField
-              placeholder="Tracking number"
-              leftAdornment={<TbTruckDelivery />}
-              value={trackingNumber}
-              ref={modalRef}
-              onChange={(e) => setTrackingNumber(e.target.value)}
-            />
-            <FormField
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Description"
-              leftAdornment={<MdOutlineDescription />}
-            />
-          </form>
-          <div className="flex gap-2 justify-space-around items-center">
-            <Button theme="secondary" onClick={() => setShowModal(false)}>
-              Cancel
-            </Button>
-            <Button onClick={submit}>Start Tracking</Button>
-          </div>
-        </ModalContent>
-      </Modal>
-
-      <SideBar>
+      <SideBar onNewTracking={(e) => createTracking(e)}>
         <div className="px-6 mt-10 flex flex-col gap-6 h-full">
           <FormField
             placeholder="Search"
@@ -161,15 +118,6 @@ function Home({ tracks = [] }: HomeProps) {
               />
             )}
           </List>
-        </div>
-        <div className="py-3 px-8 border-t shadow-md border-t-gray-200">
-          <button
-            className="flex gap-1 items-center text-sm text-slate-500 font-light"
-            onClick={() => setShowModal(true)}
-          >
-            <FiPlus></FiPlus>
-            Add Shipment
-          </button>
         </div>
       </SideBar>
       <Details
@@ -198,8 +146,5 @@ function Home({ tracks = [] }: HomeProps) {
     </>
   );
 }
-
-const searchByKeword = (term: string, field: string) =>
-  new RegExp(term, "ig").test(field);
 
 export default Home;
