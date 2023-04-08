@@ -5,4 +5,5 @@ export interface Shipment {
   destination?: string;
   origin?: string;
   status?: string;
+  startDate?: Date;
 }

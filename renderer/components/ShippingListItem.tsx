@@ -8,6 +8,7 @@ interface ShippingListItemProps {
   selected?: boolean;
   onClick?: () => void;
   className?: string;
+  startDate?: Date;
 }
 
 export default function ShippingListItem({
@@ -15,6 +16,7 @@ export default function ShippingListItem({
   selected,
   description = "",
   className,
+  startDate,
   onClick,
 }: ShippingListItemProps) {
   return (
@@ -32,7 +34,7 @@ export default function ShippingListItem({
           {capitalize(description)}
         </p>
       </div>
-      <ShipmentStatus />
+      <ShipmentStatus startDate={startDate} />
     </div>
   );
 }

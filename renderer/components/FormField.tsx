@@ -16,17 +16,11 @@ export default forwardRef<HTMLInputElement, FormFieldProps>(function FormField(
 ) {
   const actualRef = ref as any | undefined;
 
-  useShortcut(
-    () => {
-      onClear?.();
-      actualRef?.current?.blur();
-    },
-    {
-      shortcut: { code: "Escape" },
-      useGlobal: false,
-      target: actualRef?.current,
-    }
-  );
+  useShortcut(() => onClear?.(), {
+    shortcut: { code: "Escape" },
+    useGlobal: false,
+    target: actualRef?.current,
+  });
 
   const onClick: MouseEventHandler<HTMLDivElement> = () => {
     actualRef?.current?.focus();
