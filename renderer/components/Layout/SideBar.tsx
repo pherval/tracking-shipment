@@ -8,9 +8,13 @@ interface SideBarProps {
 const variants: Variants = {
   open: {
     width: "initial",
+    opacity: 1,
+    x: 0,
   },
   closed: {
     width: 0,
+    opacity: 0,
+    x: "-100%",
   },
 };
 export default function SideBar({

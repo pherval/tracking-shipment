@@ -24,7 +24,6 @@ function Home({ tracks = [] }: HomeProps) {
   const [description, setDescription] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [shipments, setShipments] = useShipmentsStorage(tracks);
-  const [showSideBar, setShowSideBar] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const modalRef = useRef<HTMLInputElement>(null);
@@ -203,12 +202,6 @@ function Home({ tracks = [] }: HomeProps) {
       </Details>
     </>
   );
-}
-
-export async function getStaticProps() {
-  return {
-    props: {},
-  };
 }
 
 const searchByKeword = (term: string, field: string) =>
