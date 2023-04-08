@@ -7,7 +7,7 @@ import { TbTruckDelivery } from "react-icons/tb";
 import Button from "../components/Button";
 import FormField from "../components/FormField";
 import List from "../components/List";
-import Modal, { ModalContent } from "../components/Modal";
+import { ModalContent, Modal } from "../components/modal";
 import ShippingListItem from "../components/ShippingListItem";
 import { useShipmentsStorage } from "../hooks";
 import { useShortcut } from "../hooks/use-shortcut";
@@ -41,18 +41,9 @@ function Home({ tracks = [] }: HomeProps) {
   );
 
   // TODO: melhorar para outras plataformas e usar atalho local do electron
-  useShortcut(
-    () => {
-      setShowModal(true);
-      modalRef.current?.focus();
-    },
-    {
-      shortcut: {
-        code: "KeyN",
-        metaKey: true,
-      },
-    }
-  );
+  useShortcut(() => setShowModal(true), {
+    shortcut: { code: "KeyN", metaKey: true },
+  });
 
   const filterTracking = (s: Shipment) =>
     searchByKeword(searchTerm, s.trackingNumber) ||
@@ -117,7 +108,11 @@ function Home({ tracks = [] }: HomeProps) {
 
   return (
     <>
-      <Modal show={showModal} onClose={() => setShowModal(false)}>
+      <Modal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        onOpen={() => modalRef.current?.focus?.()}
+      >
         <ModalContent title="Add Tracking">
           <form className="flex flex-col gap-2" onSubmit={submit}>
             <FormField
