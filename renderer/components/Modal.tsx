@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { MouseEventHandler, createContext, useContext } from "react";
 import { createPortal } from "react-dom";
 import { useShortcut } from "../use-shortcut";
@@ -29,12 +30,12 @@ export default function Modal({
   return (
     <ModalContext.Provider value={{ onClose }}>
       {createPortal(
-        <div
+        <motion.div
           className="w-full h-full z-50 fixed top-0 flex items-center justify-center inset-0 backdrop-blur-sm bg-black bg-opacity-10"
           onClick={handleClick}
         >
           {children}
-        </div>,
+        </motion.div>,
         document.body
       )}
     </ModalContext.Provider>
@@ -54,7 +55,10 @@ export function ModalContent({
   if (!context) throw new Error("ModalContent ");
 
   return (
-    <div
+    <motion.div
+      initial={{ scale: 0.2 }}
+      whileInView={{ scale: 1 }}
+      exit={{ scale: 0.2 }}
       className="p-5 bg-white shadow-xl rounded-xl text-black relative flex flex-col gap-6 text-sm"
       onClick={(e) => {
         e.stopPropagation();
@@ -62,6 +66,6 @@ export function ModalContent({
     >
       <h1 className="text-sm text-center font-bold">{title}</h1>
       {children}
-    </div>
+    </motion.div>
   );
 }
