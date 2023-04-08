@@ -12,14 +12,7 @@ interface FormFieldProps extends HTMLProps<HTMLInputElement> {
 }
 
 export default forwardRef<HTMLInputElement, FormFieldProps>(function FormField(
-  {
-    clearable,
-    onClear,
-    leftAdornment,
-    rightAdornment,
-    className,
-    ...inputProps
-  },
+  { onClear, leftAdornment, rightAdornment, className, ...inputProps },
   ref
 ) {
   console.log("ref", ref);
@@ -56,7 +49,7 @@ export default forwardRef<HTMLInputElement, FormFieldProps>(function FormField(
         {...inputProps}
       />
       <div className="flex gap-2 justify-around items-center text-lg text-slate-500">
-        {clearable && (
+        {onClear && (
           <button
             onClick={onClear}
             className={clsx(value?.length > 0 ? "visible" : "invisible")}
