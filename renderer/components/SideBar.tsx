@@ -1,18 +1,29 @@
+import { Variants, motion } from "framer-motion";
+
 interface SideBarProps {
   children: React.ReactNode;
-  showSideBar?: boolean;
+  open?: boolean;
 }
+
+const variants: Variants = {
+  open: {
+    width: "initial",
+  },
+  closed: {
+    width: 0,
+  },
+};
 export default function SideBar({
-  showSideBar = true,
+  open = true,
   children,
 }: SideBarProps): JSX.Element | null {
-  if (!showSideBar) {
-    return null;
-  }
-
   return (
-    <div className="flex flex-col justify-between shadow-inner min-w-[40vw]">
+    <motion.div
+      animate={open ? "open" : "closed"}
+      variants={variants}
+      className="flex flex-col justify-between shadow-inner"
+    >
       {children}
-    </div>
+    </motion.div>
   );
 }

@@ -18,7 +18,7 @@ import { MdOutlineDescription } from "react-icons/md";
 import { TbTruckDelivery } from "react-icons/tb";
 import { IoCloseCircleSharp } from "react-icons/io5";
 import { useShortcut } from "../use-shortcut";
-import electron from "electron";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface HomeProps {
   tracks?: [];
@@ -134,7 +134,7 @@ function Home({ tracks = [] }: HomeProps) {
         </ModalContent>
       </Modal>
 
-      <SideBar showSideBar={showSideBar}>
+      <SideBar open={showSideBar}>
         <div className="px-6 mt-10 flex flex-col gap-6">
           <FormField
             placeholder="Search"
@@ -150,27 +150,44 @@ function Home({ tracks = [] }: HomeProps) {
               )
             }
           ></FormField>
-          <div>
-            {filteredShipments?.length === 0 ? (
-              <div className="flex items-center justify-center grow">
-                no results
-              </div>
-            ) : (
-              filteredShipments?.map((shipment, index) => (
-                <div className="flex flex-col" key={shipment.trackingNumber}>
-                  <ShippingListItem
-                    description={shipment.description}
-                    selected={
-                      shipment.trackingNumber === selected?.trackingNumber
-                    }
-                    trackingNumber={shipment.trackingNumber}
-                    onClick={() => selectItem(shipment)}
-                  />
-                  {<Divider />}
+          <motion.div>
+            <AnimatePresence>
+              {filteredShipments?.length === 0 ? (
+                <div className="flex items-center justify-center grow">
+                  no results
                 </div>
-              ))
-            )}
-          </div>
+              ) : (
+                filteredShipments?.map((shipment, index) => (
+                  <motion.div
+                    variants={{
+                      closed: {
+                        x: -150,
+                        opacity: 0,
+                        transition: { duration: 0.1, delay: index * 0.1 },
+                      },
+                      open: { x: 0, opacity: 1 },
+                    }}
+                    initial="closed"
+                    className="flex flex-col"
+                    whileInView="open"
+                    exit="closed"
+                    key={shipment.trackingNumber}
+                    transition={{ duration: 0.2, delay: index * 0.1 }}
+                  >
+                    <ShippingListItem
+                      description={shipment.description}
+                      selected={
+                        shipment.trackingNumber === selected?.trackingNumber
+                      }
+                      trackingNumber={shipment.trackingNumber}
+                      onClick={() => selectItem(shipment)}
+                    />
+                    {<Divider />}
+                  </motion.div>
+                ))
+              )}
+            </AnimatePresence>
+          </motion.div>
         </div>
         <div className="py-3 px-8 border-t shadow-md border-t-gray-200">
           <button
