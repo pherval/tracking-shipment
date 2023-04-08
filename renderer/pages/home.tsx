@@ -1,23 +1,18 @@
-import clsx from "clsx";
 import { FormEventHandler, useRef, useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { FiMinusCircle, FiPlus } from "react-icons/fi";
 import { MdOutlineDescription } from "react-icons/md";
 import { RiEditLine } from "react-icons/ri";
-import {
-  TbLayoutSidebarLeftCollapse,
-  TbLayoutSidebarRightCollapse,
-  TbTruckDelivery,
-} from "react-icons/tb";
+import { TbTruckDelivery } from "react-icons/tb";
 import Button from "../components/Button";
 import FormField from "../components/FormField";
 import List from "../components/List";
 import Modal, { ModalContent } from "../components/Modal";
 import ShippingListItem from "../components/ShippingListItem";
-import SideBar from "../components/SideBar";
 import { useShipmentsStorage } from "../hooks";
 import { useShortcut } from "../hooks/use-shortcut";
-import { Shipment } from "../shipment.interface";
+import { Details, SideBar } from "../components/Layout";
+import type { Shipment } from "../shipment.interface";
 
 interface HomeProps {
   tracks?: [];
@@ -149,7 +144,7 @@ function Home({ tracks = [] }: HomeProps) {
         </ModalContent>
       </Modal>
 
-      <SideBar open={showSideBar}>
+      <SideBar>
         <div className="px-6 mt-10 flex flex-col gap-6 h-full">
           <FormField
             placeholder="Search"
@@ -183,27 +178,9 @@ function Home({ tracks = [] }: HomeProps) {
           </button>
         </div>
       </SideBar>
-
-      <div
-        className={clsx(
-          "bg-neutral-100 flex flex-col justify-between shadow-inner flex-grow"
-        )}
-      >
-        <div className="p-6">
-          <h1 className="text-center text-xl font-bold">
-            {selected?.trackingNumber}
-          </h1>
-        </div>
-
-        <div className="py-3 px-8 flex justify-center gap-12 border-t shadow-md border-t-slate-200 text-xl">
-          <button onClick={() => setShowSideBar(!showSideBar)}>
-            {showSideBar ? (
-              <TbLayoutSidebarLeftCollapse />
-            ) : (
-              <TbLayoutSidebarRightCollapse />
-            )}
-          </button>
-          {selected && (
+      <Details
+        renderActions={
+          selected && (
             <>
               <button onClick={() => edit()} className="font-bold text-lg">
                 <RiEditLine />
@@ -215,9 +192,15 @@ function Home({ tracks = [] }: HomeProps) {
                 <FiMinusCircle />
               </button>
             </>
-          )}
+          )
+        }
+      >
+        <div className="p-6">
+          <h1 className="text-center text-xl font-bold">
+            {selected?.trackingNumber}
+          </h1>
         </div>
-      </div>
+      </Details>
     </>
   );
 }

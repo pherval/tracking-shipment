@@ -1,8 +1,8 @@
 import { Variants, motion } from "framer-motion";
+import { useLayoutContext } from ".";
 
 interface SideBarProps {
   children: React.ReactNode;
-  open?: boolean;
 }
 
 const variants: Variants = {
@@ -14,12 +14,13 @@ const variants: Variants = {
   },
 };
 export default function SideBar({
-  open = true,
   children,
 }: SideBarProps): JSX.Element | null {
+  const { showSideBar } = useLayoutContext();
+
   return (
     <motion.div
-      animate={open ? "open" : "closed"}
+      animate={showSideBar ? "open" : "closed"}
       variants={variants}
       className="flex flex-col justify-between shadow-inner"
     >
