@@ -1,24 +1,23 @@
 import clsx from "clsx";
-import { FormEventHandler, useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { FormEventHandler, useRef, useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { FiMinusCircle, FiPlus } from "react-icons/fi";
+import { MdOutlineDescription } from "react-icons/md";
 import {
   TbLayoutSidebarLeftCollapse,
   TbLayoutSidebarRightCollapse,
+  TbTruckDelivery,
 } from "react-icons/tb";
+import Button from "../components/Button";
 import Divider from "../components/Divider";
 import FormField from "../components/FormField";
+import Modal, { ModalContent } from "../components/Modal";
 import ShippingListItem from "../components/ShippingListItem";
 import SideBar from "../components/SideBar";
+import { useShortcut } from "../hooks/use-shortcut";
 import { Shipment } from "../shipment.interface";
-import { useShipmentsStorage } from "../use-shipments.storage";
-import Modal, { ModalContent } from "../components/Modal";
-import Button from "../components/Button";
-import { MdOutlineDescription } from "react-icons/md";
-import { TbTruckDelivery } from "react-icons/tb";
-import { IoCloseCircleSharp } from "react-icons/io5";
-import { useShortcut } from "../use-shortcut";
-import { AnimatePresence, motion } from "framer-motion";
+import { useShipmentsStorage } from "../hooks";
 
 interface HomeProps {
   tracks?: [];
@@ -35,19 +34,31 @@ function Home({ tracks = [] }: HomeProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const modalRef = useRef<HTMLInputElement>(null);
 
-  useShortcut((e) => {
-    if (e.metaKey && e.code === "KeyF") {
+  useShortcut(
+    () => {
       inputRef.current?.focus();
+    },
+    {
+      shortcut: {
+        code: "KeyF",
+        metaKey: true,
+      },
     }
-  });
+  );
 
-  useShortcut((e) => {
-    // TODO: melhorar para outras plataformas e usar atalho local do electron
-    if (e.metaKey && e.code === "KeyN") {
+  // TODO: melhorar para outras plataformas e usar atalho local do electron
+  useShortcut(
+    (e) => {
       setShowModal(true);
       modalRef.current?.focus();
+    },
+    {
+      shortcut: {
+        code: "KeyN",
+        metaKey: true,
+      },
     }
-  });
+  );
 
   const filteredShipments = shipments?.filter(
     (s) =>

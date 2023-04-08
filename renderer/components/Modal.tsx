@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { MouseEventHandler, createContext, useContext } from "react";
 import { createPortal } from "react-dom";
-import { useShortcut } from "../use-shortcut";
+import { useShortcut } from "../hooks/use-shortcut";
 
 interface ModalProps {
   show: boolean;
@@ -19,10 +19,10 @@ export default function Modal({
     onClose?.();
   };
 
-  useShortcut((e) => {
-    if (e.key === "Escape" && show) {
-      onClose?.();
-    }
+  useShortcut(() => onClose?.(), {
+    shortcut: {
+      code: "Escape",
+    },
   });
 
   if (!show) return null;

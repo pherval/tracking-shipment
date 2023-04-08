@@ -5,7 +5,7 @@ import {
   useCallback,
   useState,
 } from "react";
-import { getItem, setItem } from "./storage";
+import { getItem } from "../storage";
 
 type SetValue<T> = Dispatch<SetStateAction<T>>;
 

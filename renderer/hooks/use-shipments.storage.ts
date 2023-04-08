@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { Shipment } from "./shipment.interface";
-import { getShipments, saveShipments } from "./shipments.storage";
+import { Shipment } from "../shipment.interface";
+import { getShipments, saveShipments } from "../shipments.storage";
 
 export function useShipmentsStorage(
   initialShipments: Shipment[] = []

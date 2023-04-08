@@ -1,8 +1,7 @@
 import clsx from "clsx";
-import { HTMLProps, MouseEventHandler, forwardRef, useRef } from "react";
-import { AiOutlineArrowRight } from "react-icons/ai";
+import { HTMLProps, MouseEventHandler, forwardRef } from "react";
 import { IoCloseCircleSharp } from "react-icons/io5";
-import { useShortcut } from "../use-shortcut";
+import { useShortcut } from "../hooks";
 
 interface FormFieldProps extends HTMLProps<HTMLInputElement> {
   leftAdornment?: React.ReactNode;
@@ -15,18 +14,22 @@ export default forwardRef<HTMLInputElement, FormFieldProps>(function FormField(
   { onClear, leftAdornment, rightAdornment, className, ...inputProps },
   ref
 ) {
-  console.log("ref", ref);
+  const actualRef = ref as any | undefined;
 
-  useShortcut((e) => {
-    if (e.code === "Escape") {
+  useShortcut(
+    () => {
       onClear?.();
+      actualRef?.current?.blur();
+    },
+    {
+      shortcut: { code: "Escape" },
+      useGlobal: false,
+      target: actualRef?.current,
     }
-  }, (ref as any)?.current);
+  );
 
-  const onClick: MouseEventHandler<HTMLDivElement> = (e) => {
-    if (ref) {
-      (ref as any).current?.focus();
-    }
+  const onClick: MouseEventHandler<HTMLDivElement> = () => {
+    actualRef?.current?.focus();
   };
 
   const value = inputProps.value as string;
