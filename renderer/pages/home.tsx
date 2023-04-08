@@ -1,23 +1,23 @@
 import clsx from "clsx";
-import { AnimatePresence, motion } from "framer-motion";
 import { FormEventHandler, useRef, useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { FiMinusCircle, FiPlus } from "react-icons/fi";
 import { MdOutlineDescription } from "react-icons/md";
+import { RiEditLine } from "react-icons/ri";
 import {
   TbLayoutSidebarLeftCollapse,
   TbLayoutSidebarRightCollapse,
   TbTruckDelivery,
 } from "react-icons/tb";
 import Button from "../components/Button";
-import Divider from "../components/Divider";
 import FormField from "../components/FormField";
+import List from "../components/List";
 import Modal, { ModalContent } from "../components/Modal";
 import ShippingListItem from "../components/ShippingListItem";
 import SideBar from "../components/SideBar";
+import { useShipmentsStorage } from "../hooks";
 import { useShortcut } from "../hooks/use-shortcut";
 import { Shipment } from "../shipment.interface";
-import { useShipmentsStorage } from "../hooks";
 
 interface HomeProps {
   tracks?: [];
@@ -48,7 +48,7 @@ function Home({ tracks = [] }: HomeProps) {
 
   // TODO: melhorar para outras plataformas e usar atalho local do electron
   useShortcut(
-    (e) => {
+    () => {
       setShowModal(true);
       modalRef.current?.focus();
     },
@@ -60,11 +60,13 @@ function Home({ tracks = [] }: HomeProps) {
     }
   );
 
-  const filteredShipments = shipments?.filter(
-    (s) =>
-      searchByKeword(searchTerm, s.trackingNumber) ||
-      searchByKeword(searchTerm, s.description ?? "")
-  );
+  const filterTracking = (s: Shipment) =>
+    searchByKeword(searchTerm, s.trackingNumber) ||
+    searchByKeword(searchTerm, s.description ?? "");
+
+  const edit = () => {
+    alert("not implemented yet");
+  };
 
   const deleteShipment = () => {
     if (selected) {
@@ -96,6 +98,7 @@ function Home({ tracks = [] }: HomeProps) {
     setShipments(
       (items) =>
         items?.concat({
+          id: trackingNumber,
           trackingNumber,
           description,
         }) ?? []
@@ -115,7 +118,7 @@ function Home({ tracks = [] }: HomeProps) {
     setSelected(shipment);
   };
 
-  // limpar modal quando fecha ele
+  // TODO: limpar form de modal quando fecha ele
 
   return (
     <>
@@ -155,50 +158,19 @@ function Home({ tracks = [] }: HomeProps) {
             leftAdornment={<BiSearch />}
             onClear={() => setSearchTerm("")}
           ></FormField>
-          <AnimatePresence>
-            {filteredShipments?.length === 0 ? (
-              <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{
-                  opacity: 1,
-                  transition: { delay: shipments?.length * 0.15 },
-                }}
-                exit={{ opacity: 0, transition: { duration: 0 } }}
-                className="flex items-center justify-center grow"
-              >
-                no results
-              </motion.div>
-            ) : (
-              filteredShipments?.map((shipment, index) => (
-                <motion.div
-                  variants={{
-                    closed: {
-                      x: -150,
-                      opacity: 0,
-                      transition: { duration: 0.1, delay: index * 0.15 },
-                    },
-                    open: { x: 0, opacity: 1 },
-                  }}
-                  initial="closed"
-                  className="flex flex-col"
-                  whileInView="open"
-                  exit="closed"
-                  key={shipment.trackingNumber}
-                  transition={{ duration: 0.2, delay: index * 0.1 }}
-                >
-                  <ShippingListItem
-                    description={shipment.description}
-                    selected={
-                      shipment.trackingNumber === selected?.trackingNumber
-                    }
-                    trackingNumber={shipment.trackingNumber}
-                    onClick={() => selectItem(shipment)}
-                  />
-                  {<Divider />}
-                </motion.div>
-              ))
+          <List
+            items={shipments.map((s) => ({ ...s, id: s.trackingNumber }))}
+            filter={filterTracking}
+            onSelect={selectItem}
+          >
+            {(shipment: Shipment) => (
+              <ShippingListItem
+                description={shipment.description}
+                selected={shipment.trackingNumber === selected?.trackingNumber}
+                trackingNumber={shipment.trackingNumber}
+              />
             )}
-          </AnimatePresence>
+          </List>
         </div>
         <div className="py-3 px-8 border-t shadow-md border-t-gray-200">
           <button
@@ -231,12 +203,17 @@ function Home({ tracks = [] }: HomeProps) {
             )}
           </button>
           {selected && (
-            <button
-              onClick={() => deleteShipment()}
-              className="text-red-500 font-bold text-lg"
-            >
-              <FiMinusCircle />
-            </button>
+            <>
+              <button onClick={() => edit()} className="font-bold text-lg">
+                <RiEditLine />
+              </button>
+              <button
+                onClick={() => deleteShipment()}
+                className="text-red-500 font-bold text-lg"
+              >
+                <FiMinusCircle />
+              </button>
+            </>
           )}
         </div>
       </div>
