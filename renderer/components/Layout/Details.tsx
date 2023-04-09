@@ -5,6 +5,8 @@ import {
 } from "react-icons/tb";
 import { ButtonIcon } from "../Button";
 import { useLayoutContext } from "./context";
+import { useState } from "react";
+import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
 
 interface DetailsProps {
   children: React.ReactNode;
@@ -13,6 +15,7 @@ interface DetailsProps {
 
 export default function Details({ renderActions, children }: DetailsProps) {
   const { showSideBar, setShowSideBar } = useLayoutContext();
+  const [darkMode, setDarkMode] = useState(false);
 
   const ToggleSideBarButton = () => (
     <ButtonIcon onClick={() => setShowSideBar(!showSideBar)}>
@@ -21,6 +24,12 @@ export default function Details({ renderActions, children }: DetailsProps) {
       ) : (
         <TbLayoutSidebarRightCollapse />
       )}
+    </ButtonIcon>
+  );
+
+  const ThemeModeButton = () => (
+    <ButtonIcon onClick={() => alert("not implemented")}>
+      {darkMode ? <MdOutlineDarkMode /> : <MdOutlineLightMode />}
     </ButtonIcon>
   );
 
@@ -34,6 +43,7 @@ export default function Details({ renderActions, children }: DetailsProps) {
 
       <div className="py-3 px-8 flex justify-center gap-12 border-t shadow-md border-t-slate-200 text-2xl">
         <ToggleSideBarButton />
+        <ThemeModeButton />
         {renderActions}
       </div>
     </div>
