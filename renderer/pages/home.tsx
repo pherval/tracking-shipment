@@ -33,6 +33,19 @@ function Home({ tracks = [] }: HomeProps) {
     }
   );
 
+  useShortcut(() => selected && edit(), {
+    shortcut: {
+      code: "KeyE",
+      metaKey: true,
+    },
+  });
+
+  useShortcut(() => selected && setSelected(null), {
+    shortcut: {
+      code: "Escape",
+    },
+  });
+
   const filterTracking = ({ trackingNumber, description }: Shipment) => {
     const searchByKeword = (term: string, field: string) =>
       new RegExp(term, "ig").test(field);

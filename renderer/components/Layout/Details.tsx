@@ -7,6 +7,7 @@ import { ButtonIcon } from "../Button";
 import { useLayoutContext } from "./context";
 import { useState } from "react";
 import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
+import { Tooltip } from "react-tooltip";
 
 interface DetailsProps {
   children: React.ReactNode;
@@ -18,7 +19,12 @@ export default function Details({ renderActions, children }: DetailsProps) {
   const [darkMode, setDarkMode] = useState(false);
 
   const ToggleSideBarButton = () => (
-    <ButtonIcon onClick={() => setShowSideBar(!showSideBar)}>
+    <ButtonIcon
+      data-tooltip-content="Toggle Sidebar"
+      data-tooltip-id="sidebar-switch"
+      onClick={() => setShowSideBar(!showSideBar)}
+    >
+      <Tooltip id="sidebar-switch" />
       {showSideBar ? (
         <TbLayoutSidebarLeftCollapse />
       ) : (
@@ -28,7 +34,13 @@ export default function Details({ renderActions, children }: DetailsProps) {
   );
 
   const ThemeModeButton = () => (
-    <ButtonIcon onClick={() => alert("not implemented")}>
+    <ButtonIcon
+      data-tooltip-id="theme-btn"
+      data-tooltip-content="Change Theme"
+      className="absolute top-5 right-5"
+      onClick={() => alert("not implemented")}
+    >
+      <Tooltip id="theme-btn" />
       {darkMode ? <MdOutlineDarkMode /> : <MdOutlineLightMode />}
     </ButtonIcon>
   );
@@ -39,11 +51,11 @@ export default function Details({ renderActions, children }: DetailsProps) {
         "bg-neutral-100 dark:bg-neutral-700 flex flex-col justify-between shadow-inner flex-grow"
       )}
     >
+      <ThemeModeButton />
       {children}
 
-      <div className="py-3 px-8 flex justify-center gap-12 border-t shadow-md border-t-slate-200 text-2xl">
+      <div className="py-3 px-8 flex justify-center gap-12 border-t shadow-md border-t-slate-200 dark:border-t-gray-800 text-2xl">
         <ToggleSideBarButton />
-        <ThemeModeButton />
         {renderActions}
       </div>
     </div>

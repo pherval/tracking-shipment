@@ -37,13 +37,22 @@ export default function SideBar({
   children,
   onNewTracking,
 }: SideBarProps): JSX.Element | null {
-  const { showSideBar } = useLayoutContext();
+  const { showSideBar, setShowSideBar } = useLayoutContext();
   const [showModal, setShowModal] = useState(false);
-  const { register, handleSubmit, setFocus } = useForm<ModalFormValues>();
+  const { register, handleSubmit, setFocus, reset } =
+    useForm<ModalFormValues>();
 
   // TODO: melhorar para outras plataformas e usar atalho local do electron
   useShortcut(() => setShowModal(true), {
     shortcut: { code: "KeyN", metaKey: true },
+  });
+
+  useShortcut(() => !showSideBar && setShowSideBar(true), {
+    shortcut: { metaKey: true, code: "ArrowRight" },
+  });
+
+  useShortcut(() => showSideBar && setShowSideBar(false), {
+    shortcut: { metaKey: true, code: "ArrowLeft" },
   });
 
   const submit: SubmitHandler<ModalFormValues> = ({
@@ -62,6 +71,7 @@ export default function SideBar({
       description,
     });
 
+    reset();
     setShowModal(false);
   };
 
@@ -76,7 +86,21 @@ export default function SideBar({
         onClose={() => setShowModal(false)}
         onOpen={() => setFocus("trackingNumber")}
       >
-        <ModalContent title="Add Tracking">
+        <ModalContent
+          title="Add Tracking"
+          renderActions={[
+            <Button
+              key="cancel"
+              theme="secondary"
+              onClick={() => setShowModal(false)}
+            >
+              Cancel
+            </Button>,
+            <Button key="submit" type="submit" onClick={handleSubmit(submit)}>
+              Start Tracking
+            </Button>,
+          ]}
+        >
           <form className="flex flex-col gap-6" onSubmit={handleSubmit(submit)}>
             <div className="flex flex-col gap-2">
               <FormField
@@ -90,21 +114,15 @@ export default function SideBar({
                 {...register("description")}
               />
             </div>
-            <div className="flex gap-2 justify-space-around items-center">
-              <Button theme="secondary" onClick={() => setShowModal(false)}>
-                Cancel
-              </Button>
-              <Button type="submit">Start Tracking</Button>
-            </div>
           </form>
         </ModalContent>
       </Modal>
 
       {children}
 
-      <div className="py-3 px-8 border-t shadow-md border-t-gray-200">
+      <div className="py-3 px-8 border-t shadow-md border-t-gray-200 dark:border-t-gray-700">
         <button
-          className="flex gap-2 items-center text-sm text-slate-500 dark:text-white font-light"
+          className="flex gap-2 items-center text-sm text-slate-500 dark:text-white font-medium"
           onClick={() => setShowModal(true)}
         >
           <FiPlus className="text-lg"></FiPlus>

@@ -64,8 +64,8 @@ export default function List<T extends { id: any }>({
               }}
               initial="closed"
               className={clsx(
-                "flex flex-col relative after:block after:w-[90%] after:h-[1px] after:bg-gray-50 after:bottom-[-1px] after:absolute after:left-[5%] last:after:h-0 after:rounded-lg",
-                selectedIndex === index && "after:h-0"
+                "flex flex-col relative after:block after:w-[90%] after:h-[1px] after:bg-gray-700 after:bottom-[-1px] after:absolute after:left-[5%] last:after:h-0 after:rounded-lg",
+                selectedIndex === index && "after:w-0"
               )}
               whileInView="open"
               exit="closed"

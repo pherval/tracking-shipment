@@ -1,16 +1,19 @@
 import { motion } from "framer-motion";
 import { useModalContext } from "./context";
 import { useEffect } from "react";
+import Button from "../Button";
 
 interface ModalContentProps {
   children: React.ReactNode;
   title: string;
+  renderActions?: React.ReactNode | React.ReactNode[];
 }
 export default function ModalContent({
   title,
   children,
+  renderActions,
 }: ModalContentProps): JSX.Element {
-  const { onOpen } = useModalContext();
+  const { onOpen, onClose } = useModalContext();
 
   useEffect(() => {
     onOpen?.();
@@ -28,6 +31,10 @@ export default function ModalContent({
     >
       <h1 className="text-sm text-center font-bold dark:text-white">{title}</h1>
       {children}
+
+      <div className="flex gap-2 justify-space-around items-center">
+        {renderActions}
+      </div>
     </motion.div>
   );
 }
