@@ -1,7 +1,6 @@
 import clsx from "clsx";
-import ShipmentStatus from "./ShipmentStatus";
 import { capitalize } from "../utils";
-import Divider from "./Divider";
+import ShipmentStatus from "./ShipmentStatus";
 
 interface ShippingListItemProps {
   trackingNumber: string;

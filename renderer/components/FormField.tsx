@@ -37,7 +37,7 @@ export default forwardRef<HTMLInputElement, FormFieldProps>(function FormField(
         {leftAdornment}
       </div>
       <input
-        ref={actualRef}
+        ref={ref}
         type="text"
         className={clsx(
           "inline-block w-full outline-none py-2 h-full bg-gray-200 dark:bg-slate-600",

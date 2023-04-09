@@ -10,6 +10,7 @@ import { useShipmentsStorage } from "../hooks";
 import { useShortcut } from "../hooks/use-shortcut";
 import type { Shipment } from "../shipment.interface";
 import { ButtonIcon } from "../components/Button";
+import { useForm } from "react-hook-form";
 
 interface HomeProps {
   tracks?: [];
@@ -17,13 +18,14 @@ interface HomeProps {
 
 function Home({ tracks = [] }: HomeProps) {
   const [selected, setSelected] = useState<Shipment | null>(null);
-  const [searchTerm, setSearchTerm] = useState<string>("");
   const [shipments, setShipments] = useShipmentsStorage(tracks);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const { register, watch, reset, setFocus } = useForm();
+
+  const searchTerm = watch("searchTerm");
 
   useShortcut(
     () => {
-      inputRef.current?.focus();
+      setFocus("searchTerm");
     },
     {
       shortcut: {
@@ -113,11 +115,9 @@ function Home({ tracks = [] }: HomeProps) {
         <div className="px-6 mt-10 flex flex-col gap-6 h-full">
           <FormField
             placeholder="Search"
-            value={searchTerm}
-            ref={inputRef}
-            onChange={(e) => setSearchTerm(e.target.value)}
             leftAdornment={<BiSearch />}
-            onClear={() => setSearchTerm("")}
+            onClear={() => reset()}
+            {...register("searchTerm")}
           ></FormField>
           <List
             selectedIndex={shipments.findIndex(
