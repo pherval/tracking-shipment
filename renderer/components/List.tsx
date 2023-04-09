@@ -37,7 +37,7 @@ export default function List<T extends { id: any }>({
   }
 
   return (
-    <div ref={container} className="overflow-auto">
+    <div ref={container} className="overflow-auto outline-none">
       <AnimatePresence>
         {filteredResults?.length === 0 ? (
           <motion.div
@@ -64,14 +64,17 @@ export default function List<T extends { id: any }>({
               }}
               initial="closed"
               className={clsx(
-                "flex flex-col relative after:block after:w-[90%] after:h-[1px] after:bg-gray-700 after:bottom-[-1px] after:absolute after:left-[5%] last:after:h-0 after:rounded-lg",
+                "outline-none flex flex-col relative after:block after:w-[90%] after:h-[1px] after:bg-gray-700 after:bottom-[-1px] after:absolute after:left-[5%] last:after:h-0 after:rounded-lg",
                 selectedIndex === index && "after:w-0"
               )}
               whileInView="open"
               exit="closed"
               key={item.id}
               transition={{ duration: 0.2, delay: index * 0.1 }}
-              onClick={() => onSelect(item)}
+              tabIndex={index}
+              onClick={() => {
+                onSelect(item);
+              }}
             >
               {children?.(item, index)}
             </motion.div>

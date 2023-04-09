@@ -52,7 +52,7 @@ export default function Details({ renderActions, children }: DetailsProps) {
       )}
     >
       <ThemeModeButton />
-      {children}
+      <div>{children}</div>
 
       <div className="py-3 px-8 flex justify-center gap-12 border-t shadow-md border-t-slate-200 dark:border-t-gray-800 text-2xl">
         <ToggleSideBarButton />

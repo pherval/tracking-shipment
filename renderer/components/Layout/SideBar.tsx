@@ -1,5 +1,5 @@
 import { Variants, motion } from "framer-motion";
-import { useState } from "react";
+import { forwardRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FiPlus } from "react-icons/fi";
 import { MdOutlineDescription } from "react-icons/md";
@@ -33,10 +33,10 @@ const variants: Variants = {
     x: "-100%",
   },
 };
-export default function SideBar({
-  children,
-  onNewTracking,
-}: SideBarProps): JSX.Element | null {
+export default forwardRef<HTMLDivElement, SideBarProps>(function SideBar(
+  { children, onNewTracking },
+  ref
+): JSX.Element | null {
   const { showSideBar, setShowSideBar } = useLayoutContext();
   const [showModal, setShowModal] = useState(false);
   const { register, handleSubmit, setFocus, reset } =
@@ -77,6 +77,7 @@ export default function SideBar({
 
   return (
     <motion.div
+      ref={ref}
       animate={showSideBar ? "open" : "closed"}
       variants={variants}
       className="flex flex-col justify-between shadow-inner dark:text-white"
@@ -131,4 +132,4 @@ export default function SideBar({
       </div>
     </motion.div>
   );
-}
+});

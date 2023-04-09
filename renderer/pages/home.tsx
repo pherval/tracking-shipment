@@ -1,52 +1,69 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
+import { useForm } from "react-hook-form";
 import { BiSearch } from "react-icons/bi";
 import { FiMinusCircle } from "react-icons/fi";
 import { RiEditLine } from "react-icons/ri";
+import { ButtonIcon } from "../components/Button";
 import FormField from "../components/FormField";
 import { Details, SideBar } from "../components/Layout";
 import List from "../components/List";
 import ShippingListItem from "../components/ShippingListItem";
-import { useShipmentsStorage } from "../hooks";
-import { useShortcut } from "../hooks/use-shortcut";
+import { useShipmentsStorage, useSelect, useShortcut } from "../hooks";
 import type { Shipment } from "../shipment.interface";
-import { ButtonIcon } from "../components/Button";
-import { useForm } from "react-hook-form";
 
-interface HomeProps {
-  tracks?: [];
-}
-
-function Home({ tracks = [] }: HomeProps) {
-  const [selected, setSelected] = useState<Shipment | null>(null);
-  const [shipments, setShipments] = useShipmentsStorage(tracks);
+function Home() {
+  const [shipments, setShipments] = useShipmentsStorage();
+  const {
+    selected,
+    select,
+    deselect,
+    isSelected,
+    selectedIndex,
+    selectPrevious,
+    selectLast,
+    selectNext,
+    selectFirst,
+  } = useSelect(shipments);
   const { register, watch, reset, setFocus } = useForm();
+  const sideBarRef = useRef<HTMLDivElement>(null);
 
   const searchTerm = watch("searchTerm");
 
-  useShortcut(
-    () => {
-      setFocus("searchTerm");
-    },
-    {
-      shortcut: {
-        code: "KeyF",
-        metaKey: true,
-      },
-    }
-  );
+  useShortcut(() => setFocus("searchTerm"), {
+    shortcut: { code: "KeyF", metaKey: true },
+  });
 
   useShortcut(() => selected && edit(), {
-    shortcut: {
-      code: "KeyE",
-      metaKey: true,
-    },
+    shortcut: { code: "KeyE", metaKey: true },
   });
 
-  useShortcut(() => selected && setSelected(null), {
-    shortcut: {
-      code: "Escape",
+  // FIXME
+  useShortcut(
+    () => isSelected() && deselect(),
+    {
+      shortcut: { code: "Escape" },
+      useGlobal: false,
     },
-  });
+    sideBarRef?.current
+  );
+
+  useShortcut(
+    () => (isSelected() ? selectPrevious() : selectLast()),
+    {
+      shortcut: { code: "ArrowUp" },
+      useGlobal: false,
+    },
+    sideBarRef?.current
+  );
+
+  useShortcut(
+    () => (isSelected() ? selectNext() : selectFirst()),
+    {
+      shortcut: { code: "ArrowDown" },
+      useGlobal: false,
+    },
+    sideBarRef?.current
+  );
 
   const filterTracking = ({ trackingNumber, description }: Shipment) => {
     const searchByKeword = (term: string, field: string) =>
@@ -71,7 +88,12 @@ function Home({ tracks = [] }: HomeProps) {
           ) ?? []
       );
 
-      setSelected(null);
+      // TODO: think about it!
+      setTimeout(() => {
+        selectPrevious();
+      }, 100);
+    } else {
+      alert("something is wrong!!!");
     }
   };
 
@@ -87,31 +109,27 @@ function Home({ tracks = [] }: HomeProps) {
       return;
     }
 
-    setShipments(
-      (items) =>
-        items?.concat({
-          id: trackingNumber,
-          trackingNumber,
-          description,
-          // startDate: new Date(),
-        }) ?? []
+    setShipments((items) =>
+      items.concat({
+        id: trackingNumber,
+        trackingNumber,
+        description,
+        // startDate: new Date(),
+      })
     );
+
+    // meh -> talvez tenha que juntar selected com setShipments
+    setTimeout(() => {
+      select((s) => s.id === trackingNumber);
+    }, 100);
   };
 
-  const selectItem = (shipment: Shipment) => {
-    if (selected?.trackingNumber === shipment.trackingNumber) {
-      setSelected(null);
-      return;
-    }
-
-    setSelected(shipment);
-  };
-
-  // TODO: limpar form de modal quando fecha ele
+  const selectItem = (item: Shipment) =>
+    select((selected) => selected.trackingNumber === item.trackingNumber);
 
   return (
     <>
-      <SideBar onNewTracking={(e) => createTracking(e)}>
+      <SideBar ref={sideBarRef} onNewTracking={(e) => createTracking(e)}>
         <div className="px-6 mt-10 flex flex-col gap-6 h-full">
           <FormField
             placeholder="Search"
@@ -120,9 +138,7 @@ function Home({ tracks = [] }: HomeProps) {
             {...register("searchTerm")}
           ></FormField>
           <List
-            selectedIndex={shipments.findIndex(
-              (s) => s.trackingNumber === selected?.trackingNumber
-            )}
+            selectedIndex={selectedIndex}
             items={shipments.map((s) => ({ ...s, id: s.trackingNumber }))}
             filter={filterTracking}
             onSelect={selectItem}
@@ -139,7 +155,7 @@ function Home({ tracks = [] }: HomeProps) {
       </SideBar>
       <Details
         renderActions={
-          selected && (
+          isSelected() && (
             <>
               <ButtonIcon onClick={edit}>
                 <RiEditLine />
@@ -151,11 +167,13 @@ function Home({ tracks = [] }: HomeProps) {
           )
         }
       >
-        <div className="p-6">
-          <h1 className="text-center text-xl font-bold">
-            {selected?.trackingNumber}
-          </h1>
-        </div>
+        {selected && (
+          <div className="p-6">
+            <h1 className="text-center text-xl font-bold">
+              {selected.trackingNumber}
+            </h1>
+          </div>
+        )}
       </Details>
     </>
   );

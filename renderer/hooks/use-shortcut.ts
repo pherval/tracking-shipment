@@ -1,10 +1,9 @@
-import { useEffect } from "react";
+import { MutableRefObject, RefObject, useEffect, useRef } from "react";
 
 interface UseShortcutOptions {
   // TODO: usar plataforma para definir o tipo correto
   // @example {mac: {}, windows: {}, linux: {}}
   shortcut: Shortcut;
-  target: HTMLElement | null;
   useGlobal: boolean;
 }
 
@@ -16,6 +15,7 @@ type Shortcut =
       key: string;
       code: string;
       metaKey: boolean;
+      type: string;
     }>;
 
 type UseShortcutHandler = {
@@ -24,30 +24,46 @@ type UseShortcutHandler = {
 
 export function useShortcut(
   handler: UseShortcutHandler,
-  { shortcut, target, useGlobal = true }: Partial<UseShortcutOptions> = {}
+  options: Partial<UseShortcutOptions> = {},
+  target?: HTMLElement | null
 ) {
+  const optionsRef = useRef<Partial<UseShortcutOptions>>(options);
+
+  const { shortcut, useGlobal = true } = optionsRef.current;
+
   useEffect(() => {
     const actualTarget = target ?? (useGlobal ? window?.document : null);
 
-    const targetListener: EventListener = (e) => {
-      const ev = e as KeyboardEvent;
+    if (!actualTarget?.addEventListener) return;
 
-      const isValid =
-        shortcut instanceof Function
-          ? shortcut(ev)
-          : Object.keys(shortcut ?? {}).every(
-              (key) =>
-                ev[key] ===
-                Object.getOwnPropertyDescriptor(shortcut, key)?.value
-            );
+    const targetAbort = new AbortController();
 
-      isValid && handler(ev);
-    };
+    actualTarget.addEventListener(
+      "keydown",
+      (e) => {
+        const ev = e as KeyboardEvent;
 
-    actualTarget?.addEventListener("keydown", targetListener, true);
+        console.log("ec", ev);
+
+        const isValid =
+          shortcut instanceof Function
+            ? shortcut(ev)
+            : Object.keys(shortcut ?? {}).every(
+                (key) =>
+                  ev[key] ===
+                  Object.getOwnPropertyDescriptor(shortcut, key)?.value
+              );
+
+        isValid && handler(ev);
+      },
+      {
+        passive: true,
+        signal: targetAbort.signal,
+      }
+    );
 
     return () => {
-      actualTarget?.removeEventListener("keydown", targetListener, true);
+      targetAbort.abort();
     };
-  }, [handler, target, shortcut, useGlobal]);
+  }, [target, useGlobal, handler, shortcut]);
 }
