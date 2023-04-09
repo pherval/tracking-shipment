@@ -11,11 +11,9 @@ interface ListProps<T> {
   selectedIndex: number;
 }
 
-// TODO: mudar selected usando setas
 export default function List<T extends { id: any }>({
   filter = () => true,
   onSelect,
-  onExit,
   selectedIndex,
   children,
   items = [],
@@ -64,7 +62,7 @@ export default function List<T extends { id: any }>({
               }}
               initial="closed"
               className={clsx(
-                "outline-none flex flex-col relative after:block after:w-[90%] after:h-[1px] after:bg-gray-700 after:bottom-[-1px] after:absolute after:left-[5%] last:after:h-0 after:rounded-lg",
+                "outline-none flex flex-col relative after:block after:w-[90%] after:h-[1px] after:dark:bg-gray-700 after:bg-slate-200 after:bottom-[-1px] after:absolute after:left-[5%] last:after:h-0 after:rounded-lg",
                 selectedIndex === index && "after:w-0"
               )}
               whileInView="open"

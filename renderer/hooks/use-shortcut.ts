@@ -43,8 +43,6 @@ export function useShortcut(
       (e) => {
         const ev = e as KeyboardEvent;
 
-        console.log("ec", ev);
-
         const isValid =
           shortcut instanceof Function
             ? shortcut(ev)

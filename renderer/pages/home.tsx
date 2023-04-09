@@ -2,13 +2,13 @@ import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { BiSearch } from "react-icons/bi";
 import { FiMinusCircle } from "react-icons/fi";
+import { IoCloseCircleSharp } from "react-icons/io5";
 import { RiEditLine } from "react-icons/ri";
-import { ButtonIcon } from "../components/Button";
+import { Tooltip } from "react-tooltip";
 import FormField from "../components/FormField";
 import { Details, SideBar } from "../components/Layout";
-import List from "../components/List";
-import ShippingListItem from "../components/ShippingListItem";
-import { useShipmentsStorage, useSelect, useShortcut } from "../hooks";
+import { List, ShippingListItem, ButtonIcon } from "../components";
+import { useSelect, useShipmentsStorage, useShortcut } from "../hooks";
 import type { Shipment } from "../shipment.interface";
 
 function Home() {
@@ -24,7 +24,7 @@ function Home() {
     selectNext,
     selectFirst,
   } = useSelect(shipments);
-  const { register, watch, reset, setFocus } = useForm();
+  const { register, watch, setFocus, resetField } = useForm();
   const sideBarRef = useRef<HTMLDivElement>(null);
 
   const searchTerm = watch("searchTerm");
@@ -133,8 +133,20 @@ function Home() {
         <div className="px-6 mt-10 flex flex-col gap-6 h-full">
           <FormField
             placeholder="Search"
-            leftAdornment={<BiSearch />}
-            onClear={() => reset()}
+            leftAdornment={
+              <ButtonIcon>
+                <BiSearch />
+              </ButtonIcon>
+            }
+            onClick={() => setFocus("searchTerm")}
+            rightAdornment={
+              <ButtonIcon
+                onClick={() => resetField("searchTerm")}
+                className={searchTerm?.length > 0 ? "visible" : "invisible"}
+              >
+                <IoCloseCircleSharp />
+              </ButtonIcon>
+            }
             {...register("searchTerm")}
           ></FormField>
           <List
@@ -155,12 +167,23 @@ function Home() {
       </SideBar>
       <Details
         renderActions={
-          isSelected() && (
+          selected && (
             <>
-              <ButtonIcon onClick={edit}>
+              <ButtonIcon
+                data-tooltip-id="edit-btn"
+                data-tooltip-content={`Edit ${selected.trackingNumber}`}
+                onClick={edit}
+              >
+                <Tooltip id="edit-btn" />
                 <RiEditLine />
               </ButtonIcon>
-              <ButtonIcon theme="danger" onClick={deleteShipment}>
+              <ButtonIcon
+                data-tooltip-id="delete-btn"
+                data-tooltip-content={`Delete ${selected.trackingNumber}`}
+                theme="danger"
+                onClick={deleteShipment}
+              >
+                <Tooltip id="delete-btn"></Tooltip>
                 <FiMinusCircle />
               </ButtonIcon>
             </>
