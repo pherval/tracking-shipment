@@ -1,3 +1,5 @@
-export default function Divider() {
-  return <div className="h-0.5 bg-slate-200"></div>;
+import clsx from "clsx";
+
+export default function Divider({ className }: { className?: string }) {
+  return <div className={clsx("h-[1px] bg-slate-200", className)}></div>;
 }

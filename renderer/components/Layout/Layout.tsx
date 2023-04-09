@@ -12,7 +12,11 @@ export default function Layout({ children }: LayoutProps) {
 
   return (
     <LayoutContext.Provider value={{ setShowSideBar, showSideBar }}>
-      <div className={clsx(styles.container, "flex h-screen")}>{children}</div>
+      <div
+        className={clsx(styles.container, "flex h-screen dark:text-gray-100")}
+      >
+        {children}
+      </div>
     </LayoutContext.Provider>
   );
 }

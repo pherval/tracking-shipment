@@ -69,7 +69,7 @@ export default function SideBar({
     <motion.div
       animate={showSideBar ? "open" : "closed"}
       variants={variants}
-      className="flex flex-col justify-between shadow-inner"
+      className="flex flex-col justify-between shadow-inner dark:text-white"
     >
       <Modal
         show={showModal}
@@ -104,10 +104,10 @@ export default function SideBar({
 
       <div className="py-3 px-8 border-t shadow-md border-t-gray-200">
         <button
-          className="flex gap-1 items-center text-sm text-slate-500 font-light"
+          className="flex gap-2 items-center text-sm text-slate-500 dark:text-white font-light"
           onClick={() => setShowModal(true)}
         >
-          <FiPlus></FiPlus>
+          <FiPlus className="text-lg"></FiPlus>
           Add Shipment
         </button>
       </div>

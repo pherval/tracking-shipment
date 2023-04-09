@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import ShipmentStatus from "./ShipmentStatus";
 import { capitalize } from "../utils";
+import Divider from "./Divider";
 
 interface ShippingListItemProps {
   trackingNumber: string;
@@ -22,15 +23,21 @@ export default function ShippingListItem({
   return (
     <div
       className={clsx(
-        "flex justify-between items-center cursor-pointer px-3 py-4 rounded-xl text-slate-400 ",
-        selected && "bg-blue-500 hover:bg-blue-600 text-white",
+        "flex justify-between items-center cursor-pointer px-3 py-4 rounded-xl text-slate-400 relative",
+        selected &&
+          "bg-blue-500 hover:bg-blue-600 text-white dark:bg-blue-600 dark:hover:bg-blue-800 transition duration-300",
         className
       )}
       onClick={onClick}
     >
       <div className="flex flex-col gap text-sm">
         <p className="text-xs">{trackingNumber.toUpperCase()}</p>
-        <p className={clsx("font-medium", !selected && "text-black")}>
+        <p
+          className={clsx(
+            "font-medium",
+            !selected && "text-black dark:text-slate-50"
+          )}
+        >
           {capitalize(description)}
         </p>
       </div>

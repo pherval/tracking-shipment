@@ -9,6 +9,7 @@ import ShippingListItem from "../components/ShippingListItem";
 import { useShipmentsStorage } from "../hooks";
 import { useShortcut } from "../hooks/use-shortcut";
 import type { Shipment } from "../shipment.interface";
+import { ButtonIcon } from "../components/Button";
 
 interface HomeProps {
   tracks?: [];
@@ -106,6 +107,9 @@ function Home({ tracks = [] }: HomeProps) {
             onClear={() => setSearchTerm("")}
           ></FormField>
           <List
+            selectedIndex={shipments.findIndex(
+              (s) => s.trackingNumber === selected?.trackingNumber
+            )}
             items={shipments.map((s) => ({ ...s, id: s.trackingNumber }))}
             filter={filterTracking}
             onSelect={selectItem}
@@ -124,15 +128,12 @@ function Home({ tracks = [] }: HomeProps) {
         renderActions={
           selected && (
             <>
-              <button onClick={() => edit()} className="font-bold text-lg">
+              <ButtonIcon onClick={edit}>
                 <RiEditLine />
-              </button>
-              <button
-                onClick={() => deleteShipment()}
-                className="text-red-500 font-bold text-lg"
-              >
+              </ButtonIcon>
+              <ButtonIcon theme="danger" onClick={deleteShipment}>
                 <FiMinusCircle />
-              </button>
+              </ButtonIcon>
             </>
           )
         }

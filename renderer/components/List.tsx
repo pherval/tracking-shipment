@@ -1,7 +1,6 @@
+import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRef } from "react";
-import Divider from "./Divider";
-import { useShortcut } from "../hooks";
 
 interface ListProps<T> {
   items: T[];
@@ -9,6 +8,7 @@ interface ListProps<T> {
   filter?: (item: T) => boolean;
   onSelect: (item: T) => void;
   onExit?: () => void;
+  selectedIndex: number;
 }
 
 // TODO: mudar selected usando setas
@@ -16,6 +16,7 @@ export default function List<T extends { id: any }>({
   filter = () => true,
   onSelect,
   onExit,
+  selectedIndex,
   children,
   items = [],
 }: ListProps<T>) {
@@ -36,7 +37,7 @@ export default function List<T extends { id: any }>({
   }
 
   return (
-    <div ref={container}>
+    <div ref={container} className="overflow-auto">
       <AnimatePresence>
         {filteredResults?.length === 0 ? (
           <motion.div
@@ -62,7 +63,10 @@ export default function List<T extends { id: any }>({
                 open: { x: 0, opacity: 1 },
               }}
               initial="closed"
-              className="flex flex-col"
+              className={clsx(
+                "flex flex-col relative after:block after:w-[90%] after:h-[1px] after:bg-gray-50 after:bottom-[-1px] after:absolute after:left-[5%] last:after:h-0 after:rounded-lg",
+                selectedIndex === index && "after:h-0"
+              )}
               whileInView="open"
               exit="closed"
               key={item.id}
@@ -70,7 +74,6 @@ export default function List<T extends { id: any }>({
               onClick={() => onSelect(item)}
             >
               {children?.(item, index)}
-              {<Divider />}
             </motion.div>
           ))
         )}

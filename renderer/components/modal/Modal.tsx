@@ -35,7 +35,7 @@ export default function Modal({
       {createPortal(
         <motion.div
           ref={ref}
-          className="w-full h-full z-50 fixed top-0 flex items-center justify-center inset-0 backdrop-blur-sm bg-black bg-opacity-50"
+          className="w-full h-full z-50 fixed top-0 flex items-center justify-center inset-0 backdrop-blur-sm bg-black bg-opacity-50 dark:bg-slate-400 dark:bg-opacity-40"
           onClick={handleClick}
         >
           {children}

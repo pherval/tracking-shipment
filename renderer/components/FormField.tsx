@@ -30,28 +30,28 @@ export default forwardRef<HTMLInputElement, FormFieldProps>(function FormField(
 
   return (
     <div
-      className="flex rounded-lg gap-3 text items-center bg-slate-200 p-2"
+      className="flex rounded-lg gap-3 text items-center bg-gray-200 dark:bg-slate-600 px-2 text-black dark:text-white"
       onClick={onClick}
     >
-      <div className="flex gap-2 justify-around items-center text-lg text-slate-500">
+      <div className="flex gap-2 justify-around items-center text-lg text-slate-200 dark:text-slate:200">
         {leftAdornment}
       </div>
       <input
         ref={actualRef}
         type="text"
         className={clsx(
-          "inline-block w-full outline-none bg-slate-200",
+          "inline-block w-full outline-none py-2 h-full bg-gray-200 dark:bg-slate-600",
           className
         )}
         {...inputProps}
       />
-      <div className="flex gap-2 justify-around items-center text-lg text-slate-500">
+      <div className="flex gap-2 justify-around items-center text-lg text-slate-500 dark:text-slate-200">
         {onClear && (
           <button
             onClick={onClear}
             className={clsx(value?.length > 0 ? "visible" : "invisible")}
           >
-            <IoCloseCircleSharp className="text-slate-700" />
+            <IoCloseCircleSharp />
           </button>
         )}
         {rightAdornment}

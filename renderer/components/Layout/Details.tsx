@@ -27,12 +27,12 @@ export default function Details({ renderActions, children }: DetailsProps) {
   return (
     <div
       className={clsx(
-        "bg-neutral-100 flex flex-col justify-between shadow-inner flex-grow"
+        "bg-neutral-100 dark:bg-neutral-700 flex flex-col justify-between shadow-inner flex-grow"
       )}
     >
       {children}
 
-      <div className="py-3 px-8 flex justify-center gap-12 border-t shadow-md border-t-slate-200 text-xl">
+      <div className="py-3 px-8 flex justify-center gap-12 border-t shadow-md border-t-slate-200 text-2xl">
         <ToggleSideBarButton />
         {renderActions}
       </div>
