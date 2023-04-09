@@ -55,8 +55,7 @@ export default forwardRef<HTMLDivElement, SideBarProps>(function SideBar(
   }) => {
     // TODO: melhorar validações
     if (!trackingNumber) {
-      alert("Empty tracking number");
-      return;
+      throw new Error("Tracking number is required");
     }
 
     onNewTracking?.({

@@ -32,9 +32,11 @@ export default function ModalContent({
       <h1 className="text-sm text-center font-bold dark:text-white">{title}</h1>
       {children}
 
-      <div className="flex gap-2 justify-space-around items-center">
-        {renderActions}
-      </div>
+      {renderActions && (
+        <div className="flex gap-2 justify-space-around items-center">
+          {renderActions}
+        </div>
+      )}
     </motion.div>
   );
 }

@@ -40,8 +40,12 @@ export default function TrackingForm({
     <form
       className="flex flex-col gap-6"
       onSubmit={handleSubmit(async (...args) => {
-        await onSubmit(...args);
-        reset();
+        try {
+          await onSubmit(...args);
+          reset();
+        } catch (err) {
+          alert(err);
+        }
       })}
     >
       <div className="flex flex-col gap-2">
@@ -66,7 +70,7 @@ export default function TrackingForm({
           {...register("description")}
         />
       </div>
-      <div>
+      <div className="flex gap-3 ">
         <Button theme="secondary" onClick={onCancel}>
           Cancel
         </Button>
