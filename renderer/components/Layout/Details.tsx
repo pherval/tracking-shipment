@@ -68,16 +68,16 @@ export default function Details({
   return (
     <div
       className={clsx(
-        "bg-neutral-100 dark:bg-neutral-700 flex flex-col justify-between shadow-inner flex-grow min-w-[20] overflow-hidden"
+        "bg-neutral-100 dark:bg-neutral-700 flex flex-col justify-between shadow-inner flex-grow min-w-[20] overflow-x-hidden max-h-[100vh] relative overflow-y-scroll"
       )}
     >
       <ThemeModeButton />
-      <div className="py-16 px-8 grow flex flex-col items-center gap-10">
+      <div className="py-16 px-8 grow flex flex-col items-center gap-10 max-w-7xl mx-auto">
         <h1 className="text-center text-xl font-bold">{title}</h1>
         {children}
       </div>
 
-      <div className="py-3 px-8 flex justify-center gap-12 border-t shadow-md border-t-slate-200 dark:border-t-gray-800 text-2xl">
+      <div className="py-3 px-8 flex justify-center gap-12 border-t shadow-md border-t-slate-200 dark:border-t-gray-800 text-2xl absolute bottom-0 w-full bg-neutral-100 dark:bg-neutral-700 z-50">
         <ToggleSideBarButton />
         {renderActions}
       </div>
