@@ -83,6 +83,8 @@ export default (
     // transparent: true, // Make the window transparent
     // vibrancy: "under-window",
     vibrancy: "titlebar",
+    minWidth: 600,
+    minHeight: 420,
   };
   win = new BrowserWindow(browserOptions);
 
