@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { BiSearch } from "react-icons/bi";
 import { IoCloseCircleSharp } from "react-icons/io5";
@@ -13,16 +13,31 @@ interface SearchBarProps {
 
 export default function SearchBar({ onSearch }: SearchBarProps) {
   const { register, watch, setFocus, resetField } = useForm();
+  const { ref: formRef, ...searchTermRegister } = register("searchTerm");
+  const searchRef = useRef<HTMLInputElement | null>(null);
+  const value = watch("searchTerm");
+
+  useDebounce(value, onSearch, 100);
 
   useShortcut(() => setFocus("searchTerm"), {
     shortcut: { code: "KeyF", metaKey: true },
   });
 
-  const value = watch("searchTerm");
-  useDebounce(value, onSearch, 100);
+  useShortcut(
+    () => resetField("searchTerm"),
+    {
+      shortcut: { code: "Escape" },
+      useGlobal: false,
+    },
+    searchRef?.current
+  );
 
   return (
     <FormField
+      ref={(input) => {
+        searchRef.current = input;
+        formRef(input);
+      }}
       placeholder="Search"
       leftAdornment={
         <ButtonIcon>
@@ -38,7 +53,7 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
           <IoCloseCircleSharp />
         </ButtonIcon>
       }
-      {...register("searchTerm")}
+      {...searchTermRegister}
     ></FormField>
   );
 }
