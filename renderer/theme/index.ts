@@ -5,8 +5,6 @@ type Themes = "light" | "dark";
 export function useTheme() {
   const [theme, setTheme] = useState<Themes | null>(null);
 
-  console.log("current theme", document.documentElement.classList);
-
   useEffect(() => {
     // On page load or when changing themes, best to add inline in `head` to avoid FOUC
     if (

@@ -13,10 +13,15 @@ import { useTheme } from "../../theme";
 
 interface DetailsProps {
   children: React.ReactNode;
+  title?: string;
   renderActions?: React.ReactNode;
 }
 
-export default function Details({ renderActions, children }: DetailsProps) {
+export default function Details({
+  title,
+  renderActions,
+  children,
+}: DetailsProps) {
   const { showSideBar, setShowSideBar, toggleSideBar } = useLayoutContext();
   const [darkMode, setDarkMode] = useState(false);
   const { toggleTheme } = useTheme();
@@ -63,11 +68,14 @@ export default function Details({ renderActions, children }: DetailsProps) {
   return (
     <div
       className={clsx(
-        "bg-neutral-100 dark:bg-neutral-700 flex flex-col justify-between shadow-inner flex-grow"
+        "bg-neutral-100 dark:bg-neutral-700 flex flex-col justify-between shadow-inner flex-grow min-w-[20] overflow-hidden"
       )}
     >
       <ThemeModeButton />
-      <div>{children}</div>
+      <div className="py-16 px-8 grow flex flex-col items-center gap-10">
+        <h1 className="text-center text-xl font-bold">{title}</h1>
+        {children}
+      </div>
 
       <div className="py-3 px-8 flex justify-center gap-12 border-t shadow-md border-t-slate-200 dark:border-t-gray-800 text-2xl">
         <ToggleSideBarButton />

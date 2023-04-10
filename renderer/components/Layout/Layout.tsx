@@ -16,7 +16,10 @@ export default function Layout({ children }: LayoutProps) {
       value={{ setShowSideBar, showSideBar, toggleSideBar }}
     >
       <div
-        className={clsx(styles.container, "flex h-screen dark:text-gray-100")}
+        className={clsx(
+          styles.container,
+          "flex h-screen dark:text-gray-100 min-w-[500px]"
+        )}
       >
         {children}
       </div>

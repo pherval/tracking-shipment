@@ -7,6 +7,7 @@ import { Details, SideBar } from "../components/Layout";
 import SearchList from "../components/SearchList";
 import { useSelect, useShipmentsStorage, useShortcut } from "../hooks";
 import type { Shipment } from "../shipment.interface";
+import { BsCheckCircleFill } from "react-icons/bs";
 
 function Home() {
   const [shipments, setShipments] = useShipmentsStorage();
@@ -25,6 +26,11 @@ function Home() {
   useShortcut(() => selected && edit(), {
     shortcut: { code: "KeyE", metaKey: true },
   });
+
+  // TODO: remover
+  // setTimeout(() => {
+  //   selectFirst();
+  // });
 
   // FIXME
   useShortcut(
@@ -145,6 +151,7 @@ function Home() {
         </SearchList>
       </SideBar>
       <Details
+        title={selected?.trackingNumber}
         renderActions={
           selected && (
             <>
@@ -170,10 +177,18 @@ function Home() {
         }
       >
         {selected && (
-          <div className="p-6">
-            <h1 className="text-center text-xl font-bold">
-              {selected.trackingNumber}
-            </h1>
+          <div className="flex flex-col gap-6 items-stretch text-gray-400 text-light text">
+            {[
+              "Objeto postado",
+              "Objeto em trânsito - por favor aguarde, em trânsito para APARECIDA DE GOIANIA",
+            ]
+              .reverse()
+              .map((v) => (
+                <div key={v} className="items-center w-[80%] ml-[10%]">
+                  <BsCheckCircleFill className="float-left mt-1" />
+                  <p className="grow-0 shrink ml-8">{v}</p>
+                </div>
+              ))}
           </div>
         )}
       </Details>
