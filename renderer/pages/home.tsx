@@ -1,11 +1,10 @@
-import { motion } from "framer-motion";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef } from "react";
 import { FiMinusCircle } from "react-icons/fi";
 import { RiEditLine } from "react-icons/ri";
 import { Tooltip } from "react-tooltip";
 import { ButtonIcon, List, ShippingListItem } from "../components";
 import { Details, SideBar } from "../components/Layout";
-import SearchBar from "../components/SearchBar";
+import SearchList from "../components/SearchList";
 import { useSelect, useShipmentsStorage, useShortcut } from "../hooks";
 import type { Shipment } from "../shipment.interface";
 
@@ -22,7 +21,6 @@ function Home() {
     selectFirst,
   } = useSelect(shipments);
   const sideBarRef = useRef<HTMLDivElement>(null);
-  const [filteredResults, setFilteredResults] = useState<Shipment[]>(shipments);
 
   useShortcut(() => selected && edit(), {
     shortcut: { code: "KeyE", metaKey: true },
@@ -61,20 +59,16 @@ function Home() {
   };
 
   const searchByTrackingNumber = useCallback(
-    (searchTerm: string) => {
-      const filterTracking = ({ trackingNumber, description }: Shipment) => {
-        const searchByKeword = (term: string, field: string) =>
-          new RegExp(term, "ig").test(field);
+    (searchTerm: string, { trackingNumber, description }: Shipment) => {
+      const searchByKeword = (term: string, field: string) =>
+        new RegExp(term, "ig").test(field);
 
-        return [
-          searchByKeword(searchTerm, trackingNumber),
-          searchByKeword(searchTerm, description ?? ""),
-        ].some((v) => v);
-      };
-
-      setFilteredResults(shipments.filter(filterTracking));
+      return [
+        searchByKeword(searchTerm, trackingNumber),
+        searchByKeword(searchTerm, description ?? ""),
+      ].some((v) => v);
     },
-    [shipments]
+    []
   );
 
   const deleteShipment = () => {
@@ -128,33 +122,27 @@ function Home() {
   return (
     <>
       <SideBar ref={sideBarRef} onNewTracking={(e) => createTracking(e)}>
-        <SearchBar onSearch={searchByTrackingNumber} />
-        {shipments.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: { duration: 0 } }}
-            className="flex items-center justify-center grow"
-          >
-            no items registered
-          </motion.div>
-        )}
-
-        <List
-          items={filteredResults.map((s) => ({ ...s, id: s.trackingNumber }))}
-          isSelected={(item) =>
-            isSelected((s) => s.trackingNumber === item.trackingNumber)
-          }
-        >
-          {(shipment: Shipment) => (
-            <ShippingListItem
-              description={shipment.description}
-              selected={shipment.trackingNumber === selected?.trackingNumber}
-              trackingNumber={shipment.trackingNumber}
-              onClick={() => selectItem(shipment)}
-            />
+        <SearchList items={shipments} filter={searchByTrackingNumber}>
+          {(results) => (
+            <List
+              items={results}
+              isSelected={(item) =>
+                isSelected((s) => s.trackingNumber === item.trackingNumber)
+              }
+            >
+              {(shipment: Shipment) => (
+                <ShippingListItem
+                  description={shipment.description}
+                  selected={
+                    shipment.trackingNumber === selected?.trackingNumber
+                  }
+                  trackingNumber={shipment.trackingNumber}
+                  onClick={() => selectItem(shipment)}
+                />
+              )}
+            </List>
           )}
-        </List>
+        </SearchList>
       </SideBar>
       <Details
         renderActions={
