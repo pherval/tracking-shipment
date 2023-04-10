@@ -2,7 +2,7 @@ import { useCallback, useRef } from "react";
 import { FiMinusCircle } from "react-icons/fi";
 import { RiEditLine } from "react-icons/ri";
 import { Tooltip } from "react-tooltip";
-import { ButtonIcon, List, ShippingListItem } from "../components";
+import { ButtonIcon, List, TrackingListItem } from "../components";
 import { Details, SideBar } from "../components/Layout";
 import SearchList from "../components/SearchList";
 import { useSelect, useShipmentsStorage, useShortcut } from "../hooks";
@@ -131,7 +131,7 @@ function Home() {
               }
             >
               {(shipment: Shipment) => (
-                <ShippingListItem
+                <TrackingListItem
                   description={shipment.description}
                   selected={
                     shipment.trackingNumber === selected?.trackingNumber

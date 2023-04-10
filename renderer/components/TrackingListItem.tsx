@@ -11,7 +11,7 @@ interface ShippingListItemProps {
   startDate?: Date;
 }
 
-export default function ShippingListItem({
+export default function TrackingListItem({
   trackingNumber,
   selected,
   description = "",

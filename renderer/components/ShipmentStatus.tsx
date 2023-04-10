@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 
 interface ShipmentStatusProps {
-  startDate: Date;
+  startDate?: Date;
 }
 
 export default function ShipmentStatus({
