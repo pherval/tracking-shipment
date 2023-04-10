@@ -56,12 +56,10 @@ export default function TrackingForm({
               <TbTruckDelivery />
             </ButtonIcon>
           }
-          tabIndex={0}
           {...register("trackingNumber", { required: true })}
         />
         <FormField
           placeholder="Description"
-          tabIndex={1}
           leftAdornment={
             <ButtonIcon>
               <MdOutlineDescription />

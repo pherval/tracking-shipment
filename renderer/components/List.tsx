@@ -17,7 +17,7 @@ export default function List<T extends { id: any }>({
   const filteredResults = items;
 
   return (
-    <div ref={container} className="overflow-auto outline-none">
+    <div ref={container} className="overflow-auto outline-none" tabIndex={3}>
       <AnimatePresence>
         {filteredResults?.length === 0 ? (
           <motion.div
@@ -39,8 +39,8 @@ export default function List<T extends { id: any }>({
               }}
               initial="closed"
               className={clsx(
-                "outline-none flex flex-col relative after:block after:w-[90%] after:h-[1px] after:dark:bg-gray-700 after:bg-slate-200 after:bottom-[-1px] after:absolute after:left-[5%] last:after:h-0 after:rounded-lg",
-                isSelected?.(item) && "after:w-0"
+                "outline-none flex flex-col relative after:block after:w-[90%] after:h-[1px] after:dark:bg-gray-700 after:bg-slate-200 after:bottom-[-1px] after:absolute after:left-[5%] last:after:h-0 after:rounded-lg transition duration-75",
+                isSelected?.(item) && "after:h-0"
               )}
               whileInView="open"
               exit="closed"
