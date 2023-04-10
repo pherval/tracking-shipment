@@ -83,7 +83,7 @@ export default forwardRef<HTMLDivElement, SideBarProps>(function SideBar(
         </ModalContent>
       </Modal>
 
-      {children}
+      <div className="px-6 mt-10 flex flex-col gap-6 h-full">{children}</div>
 
       <div className="py-3 px-8 border-t shadow-md border-t-gray-200 dark:border-t-gray-700">
         <button

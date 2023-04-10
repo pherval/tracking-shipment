@@ -1,13 +1,11 @@
-import { useRef } from "react";
-import { useForm } from "react-hook-form";
-import { BiSearch } from "react-icons/bi";
+import { motion } from "framer-motion";
+import { useCallback, useRef, useState } from "react";
 import { FiMinusCircle } from "react-icons/fi";
-import { IoCloseCircleSharp } from "react-icons/io5";
 import { RiEditLine } from "react-icons/ri";
 import { Tooltip } from "react-tooltip";
-import FormField from "../components/FormField";
+import { ButtonIcon, List, ShippingListItem } from "../components";
 import { Details, SideBar } from "../components/Layout";
-import { List, ShippingListItem, ButtonIcon } from "../components";
+import SearchBar from "../components/SearchBar";
 import { useSelect, useShipmentsStorage, useShortcut } from "../hooks";
 import type { Shipment } from "../shipment.interface";
 
@@ -18,20 +16,13 @@ function Home() {
     select,
     deselect,
     isSelected,
-    selectedIndex,
     selectPrevious,
     selectLast,
     selectNext,
     selectFirst,
   } = useSelect(shipments);
-  const { register, watch, setFocus, resetField } = useForm();
   const sideBarRef = useRef<HTMLDivElement>(null);
-
-  const searchTerm = watch("searchTerm");
-
-  useShortcut(() => setFocus("searchTerm"), {
-    shortcut: { code: "KeyF", metaKey: true },
-  });
+  const [filteredResults, setFilteredResults] = useState<Shipment[]>(shipments);
 
   useShortcut(() => selected && edit(), {
     shortcut: { code: "KeyE", metaKey: true },
@@ -65,19 +56,26 @@ function Home() {
     sideBarRef?.current
   );
 
-  const filterTracking = ({ trackingNumber, description }: Shipment) => {
-    const searchByKeword = (term: string, field: string) =>
-      new RegExp(term, "ig").test(field);
-
-    return [
-      searchByKeword(searchTerm, trackingNumber),
-      searchByKeword(searchTerm, description ?? ""),
-    ].some((v) => v);
-  };
-
   const edit = () => {
     alert("not implemented yet");
   };
+
+  const searchByTrackingNumber = useCallback(
+    (searchTerm: string) => {
+      const filterTracking = ({ trackingNumber, description }: Shipment) => {
+        const searchByKeword = (term: string, field: string) =>
+          new RegExp(term, "ig").test(field);
+
+        return [
+          searchByKeword(searchTerm, trackingNumber),
+          searchByKeword(searchTerm, description ?? ""),
+        ].some((v) => v);
+      };
+
+      setFilteredResults(shipments.filter(filterTracking));
+    },
+    [shipments]
+  );
 
   const deleteShipment = () => {
     if (selected) {
@@ -130,40 +128,33 @@ function Home() {
   return (
     <>
       <SideBar ref={sideBarRef} onNewTracking={(e) => createTracking(e)}>
-        <div className="px-6 mt-10 flex flex-col gap-6 h-full">
-          <FormField
-            placeholder="Search"
-            leftAdornment={
-              <ButtonIcon>
-                <BiSearch />
-              </ButtonIcon>
-            }
-            onClick={() => setFocus("searchTerm")}
-            rightAdornment={
-              <ButtonIcon
-                onClick={() => resetField("searchTerm")}
-                className={searchTerm?.length > 0 ? "visible" : "invisible"}
-              >
-                <IoCloseCircleSharp />
-              </ButtonIcon>
-            }
-            {...register("searchTerm")}
-          ></FormField>
-          <List
-            selectedIndex={selectedIndex}
-            items={shipments.map((s) => ({ ...s, id: s.trackingNumber }))}
-            filter={filterTracking}
-            onSelect={selectItem}
+        <SearchBar onSearch={searchByTrackingNumber} />
+        {shipments.length === 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0 } }}
+            className="flex items-center justify-center grow"
           >
-            {(shipment: Shipment) => (
-              <ShippingListItem
-                description={shipment.description}
-                selected={shipment.trackingNumber === selected?.trackingNumber}
-                trackingNumber={shipment.trackingNumber}
-              />
-            )}
-          </List>
-        </div>
+            no items registered
+          </motion.div>
+        )}
+
+        <List
+          items={filteredResults.map((s) => ({ ...s, id: s.trackingNumber }))}
+          isSelected={(item) =>
+            isSelected((s) => s.trackingNumber === item.trackingNumber)
+          }
+        >
+          {(shipment: Shipment) => (
+            <ShippingListItem
+              description={shipment.description}
+              selected={shipment.trackingNumber === selected?.trackingNumber}
+              trackingNumber={shipment.trackingNumber}
+              onClick={() => selectItem(shipment)}
+            />
+          )}
+        </List>
       </SideBar>
       <Details
         renderActions={
