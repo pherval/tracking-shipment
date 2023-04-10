@@ -2,22 +2,28 @@ import clsx from "clsx";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   theme?: keyof typeof themes;
+  border?: keyof typeof borders;
 }
 
 export default function Button({
   theme = "primary",
+  border = "default",
   className,
+  children,
   ...btnProps
 }: ButtonProps): JSX.Element {
   return (
     <button
       className={clsx(
         themes[theme],
-        "p-2 rounded-lg px-6 font-medium text-sm",
+        borders[border],
+        "p-2 px-6 font-medium text-sm inline-block",
         className
       )}
       {...btnProps}
-    ></button>
+    >
+      <div className="flex gap-4 justify-between items-center">{children}</div>
+    </button>
   );
 }
 
@@ -62,6 +68,12 @@ const btnIcon = {
 
 const themes = {
   primary: "bg-blue-500 dark:bg-blue-800 text-white",
+  dark: "bg-black text-white",
   secondary:
     "text-black border bg-transparent dark:text-slate-50 dark:border-slate-300",
+};
+
+const borders = {
+  default: "rounded-lg",
+  pill: "rounded-full",
 };
