@@ -19,8 +19,7 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
   });
 
   const value = watch("searchTerm");
-  // don't use debounce for now
-  useDebounce(value, onSearch, 0);
+  useDebounce(value, onSearch, 100);
 
   return (
     <FormField

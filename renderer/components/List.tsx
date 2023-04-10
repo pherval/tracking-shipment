@@ -26,7 +26,6 @@ export default function List<T extends { id: any }>({
               opacity: 1,
               transition: { delay: items?.length * 0.15 },
             }}
-            exit={{ opacity: 0, transition: { duration: 0 } }}
             className="flex items-center justify-center grow"
           >
             no results
@@ -35,11 +34,7 @@ export default function List<T extends { id: any }>({
           items?.map((item, index) => (
             <motion.div
               variants={{
-                closed: {
-                  x: -150,
-                  opacity: 0,
-                  transition: { duration: 0.1, delay: index * 0.15 },
-                },
+                closed: { x: -200, opacity: 0 },
                 open: { x: 0, opacity: 1 },
               }}
               initial="closed"
@@ -50,7 +45,7 @@ export default function List<T extends { id: any }>({
               whileInView="open"
               exit="closed"
               key={item.id}
-              transition={{ duration: 0.2, delay: index * 0.1 }}
+              transition={{ duration: 0.1, delay: index * 0.1 }}
               tabIndex={index}
             >
               {children?.(item, index)}
