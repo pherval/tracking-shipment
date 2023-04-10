@@ -11,6 +11,7 @@ import { AiOutlineArrowRight } from "react-icons/ai";
 import Button from "../components/Button";
 import ShippingRouteItem from "../components/ShippingRouteItem";
 import Map from "../components/Map";
+import Place from "../components/Place";
 
 function Home() {
   const [shipments, setShipments] = useShipmentsStorage();
@@ -204,6 +205,10 @@ function Home() {
           )
         }
       >
+        <div className="w-full flex flex-col gap-5">
+          <Place label="From" place="Madrid, ES" />
+          <Place label="To" place="Rio de Janeiro, BR" />
+        </div>
         <Map />
         {selected && (
           <div className="flex flex-col items-center gap-5 w-2/3 relative text-gray-400 text-light text-sm">
