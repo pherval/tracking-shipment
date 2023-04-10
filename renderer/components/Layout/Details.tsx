@@ -35,7 +35,7 @@ export default function Details({ renderActions, children }: DetailsProps) {
     <ButtonIcon
       data-tooltip-content="Toggle Sidebar"
       data-tooltip-id="sidebar-switch"
-      onClick={() => setShowSideBar(!showSideBar)}
+      onClick={toggleSideBar}
     >
       <Tooltip id="sidebar-switch" />
       {showSideBar ? (

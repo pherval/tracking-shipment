@@ -63,7 +63,7 @@ export default forwardRef<HTMLDivElement, SideBarProps>(function SideBar(
       className="flex flex-col justify-between shadow-inner dark:text-white"
     >
       <Modal show={showModal} onClose={() => setShowModal(false)}>
-        <ModalContent title="Add Tracking">
+        <ModalContent title="Add Shipment">
           <TrackingForm
             onSubmit={submit}
             onCancel={() => setShowModal(false)}
