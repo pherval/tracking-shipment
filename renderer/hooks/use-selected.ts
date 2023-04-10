@@ -40,6 +40,8 @@ const reducer = <T>(
     case "setItems":
       return {
         ...state,
+        selectedIndex: -1,
+        selected: null,
         items: action.payload.items,
       };
 
@@ -125,5 +127,8 @@ export function useSelect<T>(items: T[] = []) {
       dispatch({ type: "selectByIndex", payload: { index: 0 } }),
     selectIndex: (index: number) =>
       dispatch({ type: "selectByIndex", payload: { index } }),
+
+    setItems: (items: T[]) =>
+      dispatch({ type: "setItems", payload: { items } }),
   };
 }
