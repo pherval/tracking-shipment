@@ -8,6 +8,7 @@ import { useLayoutContext } from "./context";
 import { useState } from "react";
 import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
 import { Tooltip } from "react-tooltip";
+import { useShortcut } from "../../hooks";
 
 interface DetailsProps {
   children: React.ReactNode;
@@ -15,8 +16,20 @@ interface DetailsProps {
 }
 
 export default function Details({ renderActions, children }: DetailsProps) {
-  const { showSideBar, setShowSideBar } = useLayoutContext();
+  const { showSideBar, setShowSideBar, toggleSideBar } = useLayoutContext();
   const [darkMode, setDarkMode] = useState(false);
+
+  useShortcut(() => !showSideBar && setShowSideBar(true), {
+    shortcut: { metaKey: true, code: "ArrowRight" },
+  });
+
+  useShortcut(() => showSideBar && setShowSideBar(false), {
+    shortcut: { metaKey: true, code: "ArrowLeft" },
+  });
+
+  useShortcut(() => toggleSideBar(), {
+    shortcut: { metaKey: true, code: "Slash" },
+  });
 
   const ToggleSideBarButton = () => (
     <ButtonIcon

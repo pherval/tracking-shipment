@@ -29,24 +29,12 @@ export default forwardRef<HTMLDivElement, SideBarProps>(function SideBar(
   { children, onNewTracking },
   ref
 ): JSX.Element | null {
-  const { showSideBar, setShowSideBar } = useLayoutContext();
+  const { showSideBar } = useLayoutContext();
   const [showModal, setShowModal] = useState(false);
 
   // TODO: melhorar para outras plataformas e usar atalho local do electron
   useShortcut(() => setShowModal(true), {
     shortcut: { code: "KeyN", metaKey: true },
-  });
-
-  useShortcut(() => !showSideBar && setShowSideBar(true), {
-    shortcut: { metaKey: true, code: "ArrowRight" },
-  });
-
-  useShortcut(() => showSideBar && setShowSideBar(false), {
-    shortcut: { metaKey: true, code: "ArrowLeft" },
-  });
-
-  useShortcut(() => setShowSideBar(!showSideBar), {
-    shortcut: { metaKey: true, code: "Slash" },
   });
 
   const submit: SubmitHandler<ModalFormValues> = ({

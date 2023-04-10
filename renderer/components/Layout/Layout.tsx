@@ -9,9 +9,12 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   const [showSideBar, setShowSideBar] = useState(true);
+  const toggleSideBar = () => setShowSideBar(!showSideBar);
 
   return (
-    <LayoutContext.Provider value={{ setShowSideBar, showSideBar }}>
+    <LayoutContext.Provider
+      value={{ setShowSideBar, showSideBar, toggleSideBar }}
+    >
       <div
         className={clsx(styles.container, "flex h-screen dark:text-gray-100")}
       >

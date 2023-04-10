@@ -8,6 +8,7 @@ import {
 export const LayoutContext = createContext<{
   showSideBar: boolean;
   setShowSideBar: Dispatch<SetStateAction<boolean>>;
+  toggleSideBar: () => void;
 } | null>(null);
 
 export function useLayoutContext() {
