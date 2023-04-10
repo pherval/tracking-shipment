@@ -116,13 +116,29 @@ function Home() {
         trackingNumber,
         description,
         routes: [
-          "Objeto em trânsito - por favor aguarde, em trânsito para APARECIDA DE GOIANIA oaksd oaksdok",
-          "Objeto postado",
-          "Objeto em trânsito - por favor aguarde, em trânsito para APARECIDA DE GOIANIA",
-          "Objeto postado",
-          "Objeto em trânsito - por favor aguarde, em trânsito para APARECIDA DE GOIANIA",
-          "Objeto postado",
-          "Objeto em trânsito - por favor aguarde, em trânsito para última parada",
+          {
+            id: 1,
+            description:
+              "Objeto em trânsito - por favor aguarde, em trânsito para APARECIDA DE GOIANIA oaksd",
+          },
+          { id: 2, description: "Objeto postado" },
+          {
+            id: 3,
+            description:
+              "Objeto em trânsito - por favor aguarde, em trânsito para APARECIDA DE GOIANIA",
+          },
+          { id: 4, description: "Objeto postado" },
+          {
+            id: 5,
+            description:
+              "Objeto em trânsito - por favor aguarde, em trânsito para APARECIDA DE GOIANIA",
+          },
+          { id: 6, description: "Objeto postado" },
+          {
+            id: 7,
+            description:
+              "Objeto em trânsito - por favor aguarde, em trânsito para última parada",
+          },
         ],
         // startDate: new Date(),
       })
@@ -197,7 +213,10 @@ function Home() {
                 .reverse()
                 .slice(0, 2)
                 .map((route) => (
-                  <ShippingRouteItem key="v" description={route} />
+                  <ShippingRouteItem
+                    key={route.id}
+                    description={route.description}
+                  />
                 ))}
             </div>
 

@@ -6,5 +6,11 @@ export interface Shipment {
   origin?: string;
   status?: string;
   startDate?: Date;
-  routes: string[];
+  routes: Route[];
 }
+
+type Route = {
+  id: string | number;
+  date?: Date;
+  description?: string;
+};

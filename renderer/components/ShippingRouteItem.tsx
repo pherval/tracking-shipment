@@ -1,7 +1,7 @@
 import { HiBadgeCheck as CheckIcon } from "react-icons/hi";
 
 interface RouteItemProps {
-  description: string;
+  description?: string;
 }
 export default function ShippingRouteItem({
   description: v,
