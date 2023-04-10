@@ -7,7 +7,10 @@ import { Details, SideBar } from "../components/Layout";
 import SearchList from "../components/SearchList";
 import { useSelect, useShipmentsStorage, useShortcut } from "../hooks";
 import type { Shipment } from "../shipment.interface";
-import { BsCheckCircleFill } from "react-icons/bs";
+import { AiOutlineArrowRight } from "react-icons/ai";
+import Button from "../components/Button";
+import ShippingRouteItem from "../components/ShippingRouteItem";
+import Map from "../components/Map";
 
 function Home() {
   const [shipments, setShipments] = useShipmentsStorage();
@@ -28,9 +31,9 @@ function Home() {
   });
 
   // TODO: remover
-  // setTimeout(() => {
-  //   selectFirst();
-  // });
+  setTimeout(() => {
+    selectFirst();
+  }, 4_000);
 
   // FIXME
   useShortcut(
@@ -176,19 +179,30 @@ function Home() {
           )
         }
       >
+        <Map />
         {selected && (
-          <div className="flex flex-col gap-6 items-stretch text-gray-400 text-light text">
-            {[
-              "Objeto postado",
-              "Objeto em trânsito - por favor aguarde, em trânsito para APARECIDA DE GOIANIA",
-            ]
-              .reverse()
-              .map((v) => (
-                <div key={v} className="items-center w-[80%] ml-[10%]">
-                  <BsCheckCircleFill className="float-left mt-1" />
-                  <p className="grow-0 shrink ml-8">{v}</p>
-                </div>
-              ))}
+          <div className="flex flex-col items-center gap-5 w-2/3 relative text-gray-400 text-light text-sm">
+            <div>
+              {[
+                "Objeto em trânsito - por favor aguarde, em trânsito para APARECIDA DE GOIANIA oaksd oaksdok",
+                "Objeto postado",
+                "Objeto em trânsito - por favor aguarde, em trânsito para APARECIDA DE GOIANIA",
+                "Objeto postado",
+                "Objeto em trânsito - por favor aguarde, em trânsito para APARECIDA DE GOIANIA",
+                "Objeto postado",
+                "Objeto em trânsito - por favor aguarde, em trânsito para última parada",
+              ]
+                .reverse()
+                .slice(0, 2)
+                .map((route) => (
+                  <ShippingRouteItem key="v" description={route} />
+                ))}
+            </div>
+
+            <Button theme="dark" border="pill">
+              Full history
+              <AiOutlineArrowRight className="text-lg" />
+            </Button>
           </div>
         )}
       </Details>
