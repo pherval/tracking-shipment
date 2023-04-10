@@ -31,9 +31,9 @@ function Home() {
   });
 
   // TODO: remover
-  setTimeout(() => {
-    selectFirst();
-  }, 4_000);
+  // setTimeout(() => {
+  //   selectFirst();
+  // }, 4_000);
 
   // FIXME
   useShortcut(
@@ -115,6 +115,15 @@ function Home() {
         id: trackingNumber,
         trackingNumber,
         description,
+        routes: [
+          "Objeto em trânsito - por favor aguarde, em trânsito para APARECIDA DE GOIANIA oaksd oaksdok",
+          "Objeto postado",
+          "Objeto em trânsito - por favor aguarde, em trânsito para APARECIDA DE GOIANIA",
+          "Objeto postado",
+          "Objeto em trânsito - por favor aguarde, em trânsito para APARECIDA DE GOIANIA",
+          "Objeto postado",
+          "Objeto em trânsito - por favor aguarde, em trânsito para última parada",
+        ],
         // startDate: new Date(),
       })
     );
@@ -183,15 +192,8 @@ function Home() {
         {selected && (
           <div className="flex flex-col items-center gap-5 w-2/3 relative text-gray-400 text-light text-sm">
             <div>
-              {[
-                "Objeto em trânsito - por favor aguarde, em trânsito para APARECIDA DE GOIANIA oaksd oaksdok",
-                "Objeto postado",
-                "Objeto em trânsito - por favor aguarde, em trânsito para APARECIDA DE GOIANIA",
-                "Objeto postado",
-                "Objeto em trânsito - por favor aguarde, em trânsito para APARECIDA DE GOIANIA",
-                "Objeto postado",
-                "Objeto em trânsito - por favor aguarde, em trânsito para última parada",
-              ]
+              {selected.routes
+                .slice()
                 .reverse()
                 .slice(0, 2)
                 .map((route) => (
