@@ -9,6 +9,7 @@ import { useState } from "react";
 import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
 import { Tooltip } from "react-tooltip";
 import { useShortcut } from "../../hooks";
+import { useTheme } from "../../theme";
 
 interface DetailsProps {
   children: React.ReactNode;
@@ -18,6 +19,7 @@ interface DetailsProps {
 export default function Details({ renderActions, children }: DetailsProps) {
   const { showSideBar, setShowSideBar, toggleSideBar } = useLayoutContext();
   const [darkMode, setDarkMode] = useState(false);
+  const { toggleTheme } = useTheme();
 
   useShortcut(() => !showSideBar && setShowSideBar(true), {
     shortcut: { metaKey: true, code: "ArrowRight" },
@@ -51,7 +53,7 @@ export default function Details({ renderActions, children }: DetailsProps) {
       data-tooltip-id="theme-btn"
       data-tooltip-content="Change Theme"
       className="absolute top-5 right-5"
-      onClick={() => alert("not implemented")}
+      onClick={toggleTheme}
     >
       <Tooltip id="theme-btn" />
       {darkMode ? <MdOutlineDarkMode /> : <MdOutlineLightMode />}
