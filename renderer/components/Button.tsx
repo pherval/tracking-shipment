@@ -20,9 +20,9 @@ export default function Button({
   return (
     <button
       className={clsx(
-        themes[theme],
-        borders[border],
         "p-2 px-6 font-medium text-sm inline-block",
+        borders[border],
+        themes[theme],
         className
       )}
       {...btnProps}

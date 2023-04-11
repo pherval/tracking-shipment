@@ -12,6 +12,7 @@ import Button from "../components/Button";
 import ShippingRouteItem from "../components/ShippingRouteItem";
 import Map from "../components/Map";
 import Place from "../components/Place";
+import Link from "next/link";
 
 function Home() {
   const [shipments, setShipments] = useShipmentsStorage();
@@ -225,10 +226,17 @@ function Home() {
                 ))}
             </div>
 
-            <Button theme="dark" border="pill">
-              Full history
-              <AiOutlineArrowRight className="text-lg" />
-            </Button>
+            <Link href="/route">
+              <a>
+                <Button
+                  theme="dark"
+                  border="pill"
+                  RightIcon={AiOutlineArrowRight}
+                >
+                  Full history
+                </Button>
+              </a>
+            </Link>
           </div>
         )}
       </Details>
