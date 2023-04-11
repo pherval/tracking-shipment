@@ -1,0 +1,47 @@
+[
+  {
+    "codObjeto": "TF485920436BR",
+    "dtPrevista": "2023-04-13T20:59:59",
+    "eventos": [
+      {
+        "codigo": "RO",
+        "descricao": "Objeto em trânsito - por favor aguarde",
+        "dtHrCriado": "2023-04-11T15:21:00",
+        "tipo": "01",
+        "unidade": {
+          "endereco": { "cidade": "BELO HORIZONTE", "uf": "MG" },
+          "tipo": "Agência dos Correios"
+        },
+        "unidadeDestino": {
+          "endereco": { "cidade": "BELO HORIZONTE", "uf": "MG" },
+          "nome": "CTCE BELO HORIZONTE",
+          "tipo": "TCE"
+        },
+        "urlIcone": "/public-resources/img/caminhao-cor.png"
+      },
+      {
+        "codigo": "PO",
+        "descricao": "Objeto postado",
+        "dtHrCriado": "2023-04-11T12:28:02",
+        "tipo": "01",
+        "unidade": {
+          "endereco": { "cidade": "BELO HORIZONTE", "uf": "MG" },
+          "tipo": "Agência dos Correios"
+        },
+        "urlIcone": "/public-resources/img/agencia-cor.png"
+      }
+    ],
+    "tipoPostal": {
+      "categoria": "SEDEX",
+      "descricao": "ETIQUETA LOGICA SEDEX",
+      "sigla": "TF"
+    },
+    "habilitaAutoDeclaracao": false,
+    "permiteEncargoImportacao": false,
+    "habilitaPercorridaCarteiro": false,
+    "bloqueioObjeto": false,
+    "possuiLocker": false,
+    "habilitaLocker": false,
+    "habilitaCrowdshipping": false
+  }
+]

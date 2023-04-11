@@ -18,6 +18,8 @@ import { useSelect, useShipmentsStorage, useShortcut } from "../hooks";
 import type { Shipment } from "../shipment.interface";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { useRouter } from "next/router";
+import { useQuery } from "@tanstack/react-query";
+import { Correios } from "../adapters";
 
 function Home() {
   const [shipments, setShipments] = useShipmentsStorage();
@@ -32,6 +34,15 @@ function Home() {
     selectFirst,
   } = useSelect(shipments);
   const sideBarRef = useRef<HTMLDivElement>(null);
+
+  // const { isLoading, data, error } = useQuery(
+  //   ["correios-rastreio"],
+  //   async () => {
+  //     const res = await fetch("/api/track");
+
+  //     return res.json();
+  //   }
+  // );
 
   useShortcut(() => selected && edit(), {
     shortcut: { code: "KeyE", metaKey: true },
@@ -218,6 +229,7 @@ function Home() {
         <div className="w-full flex flex-col gap-5">
           <Place label="From" place="Madrid, ES" />
           <Place label="To" place="Rio de Janeiro, BR" />
+          {data?.data}
         </div>
         <Map />
         {selected && (
