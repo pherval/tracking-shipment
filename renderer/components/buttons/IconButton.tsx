@@ -7,7 +7,7 @@ interface ButtonIconProps extends React.HTMLAttributes<HTMLButtonElement> {
   size?: BtnIconSize;
 }
 
-export default function ButtonIcon({
+export default function IconButton({
   theme = "default",
   size = "base",
   className,

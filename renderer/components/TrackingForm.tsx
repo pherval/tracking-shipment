@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import FormField from "./FormField";
-import { ButtonIcon, Button } from "./buttons";
+import { IconButton, Button } from "./buttons";
 import { TbTruckDelivery } from "react-icons/tb";
 import { MdOutlineDescription } from "react-icons/md";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -52,18 +52,18 @@ export default function TrackingForm({
         <FormField
           placeholder="Tracking number"
           leftAdornment={
-            <ButtonIcon>
+            <IconButton>
               <TbTruckDelivery />
-            </ButtonIcon>
+            </IconButton>
           }
           {...register("trackingNumber", { required: true })}
         />
         <FormField
           placeholder="Description"
           leftAdornment={
-            <ButtonIcon>
+            <IconButton>
               <MdOutlineDescription />
-            </ButtonIcon>
+            </IconButton>
           }
           {...register("description")}
         />

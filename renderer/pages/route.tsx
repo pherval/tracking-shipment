@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { AiOutlineLeft } from "react-icons/ai";
-import { ButtonIcon } from "../components";
+import { IconButton } from "../components";
 import { Details } from "../components/Layout";
 
 export default function RoutePage() {
@@ -8,9 +8,9 @@ export default function RoutePage() {
     <Details hideToolbar>
       <Link href="/home">
         <a>
-          <ButtonIcon className="absolute top-10 left-10">
+          <IconButton className="absolute top-10 left-10">
             <AiOutlineLeft />
-          </ButtonIcon>
+          </IconButton>
         </a>
       </Link>
 

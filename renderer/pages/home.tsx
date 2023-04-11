@@ -4,7 +4,7 @@ import { FiMinusCircle } from "react-icons/fi";
 import { RiEditLine } from "react-icons/ri";
 import { Tooltip } from "react-tooltip";
 import {
-  ButtonIcon,
+  IconButton,
   List,
   TrackingListItem,
   Button,
@@ -189,15 +189,15 @@ function Home() {
         renderActions={
           selected && (
             <>
-              <ButtonIcon
+              <IconButton
                 data-tooltip-id="edit-btn"
                 data-tooltip-content={`Edit ${selected.trackingNumber}`}
                 onClick={edit}
               >
                 <Tooltip id="edit-btn" />
                 <RiEditLine />
-              </ButtonIcon>
-              <ButtonIcon
+              </IconButton>
+              <IconButton
                 data-tooltip-id="delete-btn"
                 data-tooltip-content={`Delete ${selected.trackingNumber}`}
                 theme="danger"
@@ -205,7 +205,7 @@ function Home() {
               >
                 <Tooltip id="delete-btn"></Tooltip>
                 <FiMinusCircle />
-              </ButtonIcon>
+              </IconButton>
             </>
           )
         }

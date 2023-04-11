@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { BiSearch } from "react-icons/bi";
 import { IoCloseCircleSharp } from "react-icons/io5";
 import { useDebounce, useShortcut } from "../hooks";
-import { ButtonIcon } from "./buttons";
+import { IconButton } from "./buttons";
 import FormField from "./FormField";
 
 interface SearchBarProps {
@@ -40,18 +40,18 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
       }}
       placeholder="Search"
       leftAdornment={
-        <ButtonIcon>
+        <IconButton>
           <BiSearch />
-        </ButtonIcon>
+        </IconButton>
       }
       onClick={() => setFocus("searchTerm")}
       rightAdornment={
-        <ButtonIcon
+        <IconButton
           onClick={() => resetField("searchTerm")}
           className={value?.length > 0 ? "visible" : "invisible"}
         >
           <IoCloseCircleSharp />
-        </ButtonIcon>
+        </IconButton>
       }
       {...searchTermRegister}
     ></FormField>

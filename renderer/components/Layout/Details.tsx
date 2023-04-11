@@ -10,7 +10,7 @@ import { Tooltip } from "react-tooltip";
 import { useShortcut } from "../../hooks";
 import { useTheme } from "../../theme";
 import Toolbar from "../Toolbar";
-import { ButtonIcon } from "../buttons";
+import { IconButton } from "../buttons";
 
 interface DetailsProps {
   children: React.ReactNode;
@@ -42,7 +42,7 @@ export default function Details({
   });
 
   const ToggleSideBarButton = () => (
-    <ButtonIcon
+    <IconButton
       data-tooltip-content="Toggle Sidebar"
       data-tooltip-id="sidebar-switch"
       onClick={toggleSideBar}
@@ -53,11 +53,11 @@ export default function Details({
       ) : (
         <TbLayoutSidebarRightCollapse />
       )}
-    </ButtonIcon>
+    </IconButton>
   );
 
   const ThemeModeButton = () => (
-    <ButtonIcon
+    <IconButton
       data-tooltip-id="theme-btn"
       data-tooltip-content="Change Theme"
       className="absolute top-5 right-5"
@@ -65,7 +65,7 @@ export default function Details({
     >
       <Tooltip id="theme-btn" />
       {darkMode ? <MdOutlineDarkMode /> : <MdOutlineLightMode />}
-    </ButtonIcon>
+    </IconButton>
   );
 
   return (
