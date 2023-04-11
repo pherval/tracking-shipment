@@ -3,7 +3,6 @@ import {
   TbLayoutSidebarLeftCollapse,
   TbLayoutSidebarRightCollapse,
 } from "react-icons/tb";
-import { ButtonIcon } from "../Button";
 import { useLayoutContext } from "./context";
 import { useState } from "react";
 import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
@@ -11,6 +10,7 @@ import { Tooltip } from "react-tooltip";
 import { useShortcut } from "../../hooks";
 import { useTheme } from "../../theme";
 import Toolbar from "../Toolbar";
+import { ButtonIcon } from "../buttons";
 
 interface DetailsProps {
   children: React.ReactNode;

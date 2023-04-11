@@ -1,18 +1,22 @@
+import Link from "next/link";
 import { useCallback, useRef } from "react";
 import { FiMinusCircle } from "react-icons/fi";
 import { RiEditLine } from "react-icons/ri";
 import { Tooltip } from "react-tooltip";
-import { ButtonIcon, List, TrackingListItem } from "../components";
+import {
+  ButtonIcon,
+  List,
+  TrackingListItem,
+  Button,
+  Place,
+  Map,
+  ShippingRouteItem,
+} from "../components";
 import { Details, SideBar } from "../components/Layout";
 import SearchList from "../components/SearchList";
 import { useSelect, useShipmentsStorage, useShortcut } from "../hooks";
 import type { Shipment } from "../shipment.interface";
 import { AiOutlineArrowRight } from "react-icons/ai";
-import Button from "../components/Button";
-import ShippingRouteItem from "../components/ShippingRouteItem";
-import Map from "../components/Map";
-import Place from "../components/Place";
-import Link from "next/link";
 
 function Home() {
   const [shipments, setShipments] = useShipmentsStorage();

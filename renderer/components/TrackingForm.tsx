@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import FormField from "./FormField";
-import Button, { ButtonIcon } from "./Button";
+import { ButtonIcon, Button } from "./buttons";
 import { TbTruckDelivery } from "react-icons/tb";
 import { MdOutlineDescription } from "react-icons/md";
 import { SubmitHandler, useForm } from "react-hook-form";

@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { useModalContext } from "./context";
 import { useEffect } from "react";
-import Button from "../Button";
 
 interface ModalContentProps {
   children: React.ReactNode;

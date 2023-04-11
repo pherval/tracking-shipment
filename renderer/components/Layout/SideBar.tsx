@@ -8,7 +8,7 @@ import { Shipment } from "../../shipment.interface";
 import { Modal, ModalContent } from "../modal";
 import TrackingForm, { ModalFormValues } from "../TrackingForm";
 import Toolbar from "../Toolbar";
-import Button from "../Button";
+import { Button } from "../buttons";
 
 interface SideBarProps {
   children: React.ReactNode;
@@ -79,7 +79,12 @@ export default forwardRef<HTMLDivElement, SideBarProps>(function SideBar(
       </div>
 
       <Toolbar align="left">
-        <Button theme="flat" border="none" LeftIcon={FiPlus}>
+        <Button
+          theme="flat"
+          border="none"
+          LeftIcon={FiPlus}
+          onClick={() => setShowModal(true)}
+        >
           Add Shipment
         </Button>
       </Toolbar>

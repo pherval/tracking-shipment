@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { BiSearch } from "react-icons/bi";
 import { IoCloseCircleSharp } from "react-icons/io5";
 import { useDebounce, useShortcut } from "../hooks";
-import { ButtonIcon } from "./Button";
+import { ButtonIcon } from "./buttons";
 import FormField from "./FormField";
 
 interface SearchBarProps {
