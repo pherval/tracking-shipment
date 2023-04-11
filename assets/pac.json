@@ -1,0 +1,18 @@
+{
+  "codigo": "0987654321",
+  "servico": "PAC",
+  "status": "Objeto em trânsito para unidade de distribuição",
+  "data": "2022-03-20 10:30:00",
+  "historico": [
+    {
+      "data": "2022-03-19 14:00:00",
+      "local": "Agência dos Correios",
+      "mensagem": "Objeto encaminhado de Agência dos Correios em Rio de Janeiro / RJ para Agência dos Correios em São Paulo / SP"
+    },
+    {
+      "data": "2022-03-18 17:00:00",
+      "local": "Agência dos Correios",
+      "mensagem": "Objeto postado"
+    }
+  ]
+}

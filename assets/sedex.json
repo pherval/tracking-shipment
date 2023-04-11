@@ -1,0 +1,28 @@
+{
+  "codigo": "1234567890",
+  "servico": "SEDEX",
+  "status": "Objeto entregue ao destinatário",
+  "data": "2021-09-15 15:20:00",
+  "historico": [
+    {
+      "data": "2021-09-14 08:00:00",
+      "local": "Agência dos Correios",
+      "mensagem": "Objeto saiu para entrega ao destinatário"
+    },
+    {
+      "data": "2021-09-13 14:00:00",
+      "local": "Agência dos Correios",
+      "mensagem": "Objeto em trânsito para unidade de distribuição"
+    },
+    {
+      "data": "2021-09-13 10:00:00",
+      "local": "Agência dos Correios",
+      "mensagem": "Objeto encaminhado de Agência dos Correios em São Paulo / SP para Agência dos Correios em Campinas / SP"
+    },
+    {
+      "data": "2021-09-12 18:00:00",
+      "local": "Agência dos Correios",
+      "mensagem": "Objeto postado"
+    }
+  ]
+}
