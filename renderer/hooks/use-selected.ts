@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from "react";
+import { useCallback, useEffect, useReducer } from "react";
 
 type SelectedState<T> = {
   selected: T | null;
@@ -101,6 +101,11 @@ export function useSelect<T>(items: T[] = []) {
     items,
   });
 
+  const select = useCallback(
+    (filter: Filter<T>) => dispatch({ type: "select", payload: { filter } }),
+    [dispatch]
+  );
+
   useEffect(() => {
     dispatch({ type: "setItems", payload: { items } });
   }, [items]);
@@ -112,8 +117,7 @@ export function useSelect<T>(items: T[] = []) {
         ? filter(state.selected)
         : state.selectedIndex !== -1,
     selectedIndex: state.selectedIndex,
-    select: (filter: Filter<T>) =>
-      dispatch({ type: "select", payload: { filter } }),
+    select,
     deselect: () => dispatch({ type: "deselect" }),
 
     selectNext: () => dispatch({ type: "next" }),

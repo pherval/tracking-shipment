@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { FiMinusCircle } from "react-icons/fi";
 import { RiEditLine } from "react-icons/ri";
 import { Tooltip } from "react-tooltip";
@@ -17,6 +17,7 @@ import SearchList from "../components/SearchList";
 import { useSelect, useShipmentsStorage, useShortcut } from "../hooks";
 import type { Shipment } from "../shipment.interface";
 import { AiOutlineArrowRight } from "react-icons/ai";
+import { useRouter } from "next/router";
 
 function Home() {
   const [shipments, setShipments] = useShipmentsStorage();
@@ -35,6 +36,18 @@ function Home() {
   useShortcut(() => selected && edit(), {
     shortcut: { code: "KeyE", metaKey: true },
   });
+
+  const route = useRouter();
+  const currentId = route.query.id;
+
+  useEffect(() => {
+    if (currentId) {
+      select((f) => f.trackingNumber === currentId);
+    }
+  }, [currentId, select]);
+
+  const selectItem = (item: Shipment) =>
+    route.replace({ query: { id: item.trackingNumber } });
 
   // TODO: remover
   // setTimeout(() => {
@@ -155,9 +168,6 @@ function Home() {
       select((s) => s.id === trackingNumber);
     }, 100);
   };
-
-  const selectItem = (item: Shipment) =>
-    select((selected) => selected.trackingNumber === item.trackingNumber);
 
   return (
     <>
