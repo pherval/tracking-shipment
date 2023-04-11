@@ -1,7 +1,8 @@
-import { Menu, app } from "electron";
+import { Menu, app, ipcMain } from "electron";
 import serve from "electron-serve";
 import { createWindow } from "./helpers";
 import createMenu from "./helpers/create-menu";
+import { env } from "node-environment";
 
 const isProd: boolean = process.env.NODE_ENV === "production";
 
@@ -32,4 +33,8 @@ if (isProd) {
 
 app.on("window-all-closed", () => {
   app.quit();
+});
+
+ipcMain.on("env", (event, ...args) => {
+  event.returnValue = env(...args);
 });

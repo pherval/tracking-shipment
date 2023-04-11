@@ -49,11 +49,6 @@ function Home() {
   const selectItem = (item: Shipment) =>
     route.replace({ query: { id: item.trackingNumber } });
 
-  // TODO: remover
-  // setTimeout(() => {
-  //   selectFirst();
-  // }, 4_000);
-
   // FIXME
   useShortcut(
     () => isSelected() && deselect(),

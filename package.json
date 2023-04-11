@@ -11,12 +11,15 @@
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
+    "@tanstack/react-query": "^4.29.1",
+    "@tanstack/react-query-devtools": "^4.29.1",
     "clsx": "^1.2.1",
     "correios-brasil": "^3.0.4",
     "electron-serve": "^1.1.0",
     "electron-store": "^8.1.0",
     "framer-motion": "^10.11.2",
     "luxon": "^3.3.0",
+    "node-environment": "^0.5.1",
     "react-hook-form": "^7.43.9",
     "react-icons": "^4.8.0",
     "react-resizable": "^3.0.5",
