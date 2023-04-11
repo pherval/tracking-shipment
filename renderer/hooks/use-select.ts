@@ -106,33 +106,56 @@ export function useSelect<T>(items: T[] = []) {
     [dispatch]
   );
 
+  const deselect = useCallback(
+    () => dispatch({ type: "deselect" }),
+    [dispatch]
+  );
+  const selectNext = useCallback(() => dispatch({ type: "next" }), [dispatch]);
+  const selectPrevious = useCallback(
+    () => dispatch({ type: "previous" }),
+    [dispatch]
+  );
+
+  const selectIndex = useCallback(
+    (index: number) => dispatch({ type: "selectByIndex", payload: { index } }),
+    [dispatch]
+  );
+
+  const selectFirst = useCallback(() => selectIndex(0), [selectIndex]);
+
+  const setItems = useCallback(
+    (items: T[]) => dispatch({ type: "setItems", payload: { items } }),
+    []
+  );
+
+  const selectLast = useCallback(
+    () => selectIndex(state.items.length - 1),
+    [selectIndex, state.items.length]
+  );
+
+  const isSelected = useCallback(
+    (filter?: Filter<T>) =>
+      filter && state.selected
+        ? filter(state.selected)
+        : state.selectedIndex !== -1,
+    [state.selectedIndex, state.selected]
+  );
+
   useEffect(() => {
     dispatch({ type: "setItems", payload: { items } });
   }, [items]);
 
   return {
     selected: state.selected,
-    isSelected: (filter?: Filter<T>) =>
-      filter && state.selected
-        ? filter(state.selected)
-        : state.selectedIndex !== -1,
     selectedIndex: state.selectedIndex,
+    isSelected,
     select,
-    deselect: () => dispatch({ type: "deselect" }),
-
-    selectNext: () => dispatch({ type: "next" }),
-    selectPrevious: () => dispatch({ type: "previous" }),
-    selectLast: () =>
-      dispatch({
-        type: "selectByIndex",
-        payload: { index: state.items.length - 1 },
-      }),
-    selectFirst: () =>
-      dispatch({ type: "selectByIndex", payload: { index: 0 } }),
-    selectIndex: (index: number) =>
-      dispatch({ type: "selectByIndex", payload: { index } }),
-
-    setItems: (items: T[]) =>
-      dispatch({ type: "setItems", payload: { items } }),
+    deselect,
+    selectNext,
+    selectPrevious,
+    selectLast,
+    selectFirst,
+    selectIndex,
+    setItems,
   };
 }
