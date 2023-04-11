@@ -1,13 +1,18 @@
 import clsx from "clsx";
+import { IconType } from "react-icons";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   theme?: keyof typeof themes;
   border?: keyof typeof borders;
+  LeftIcon?: IconType;
+  RightIcon?: IconType;
 }
 
 export default function Button({
   theme = "primary",
   border = "default",
+  LeftIcon,
+  RightIcon,
   className,
   children,
   ...btnProps
@@ -22,7 +27,11 @@ export default function Button({
       )}
       {...btnProps}
     >
-      <div className="flex gap-4 justify-between items-center">{children}</div>
+      <div className="flex gap-4 justify-between items-center">
+        {LeftIcon && <LeftIcon className="text-lg" />}
+        {children}
+        {RightIcon && <RightIcon className="text-lg" />}
+      </div>
     </button>
   );
 }
@@ -71,9 +80,11 @@ const themes = {
   dark: "bg-black text-white",
   secondary:
     "text-black border bg-transparent dark:text-slate-50 dark:border-slate-300",
+  flat: "p-0 bg-transparent text-slate-500 dark:text-slate-300",
 };
 
 const borders = {
   default: "rounded-lg",
   pill: "rounded-full",
+  none: "border-none",
 };

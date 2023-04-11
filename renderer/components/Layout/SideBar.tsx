@@ -7,6 +7,8 @@ import { useShortcut } from "../../hooks";
 import { Shipment } from "../../shipment.interface";
 import { Modal, ModalContent } from "../modal";
 import TrackingForm, { ModalFormValues } from "../TrackingForm";
+import Toolbar from "../Toolbar";
+import Button from "../Button";
 
 interface SideBarProps {
   children: React.ReactNode;
@@ -50,6 +52,7 @@ export default forwardRef<HTMLDivElement, SideBarProps>(function SideBar(
       id: trackingNumber,
       trackingNumber,
       description,
+      routes: [],
     });
 
     setShowModal(false);
@@ -71,17 +74,15 @@ export default forwardRef<HTMLDivElement, SideBarProps>(function SideBar(
         </ModalContent>
       </Modal>
 
-      <div className="px-6 mt-10 flex flex-col gap-6 h-full">{children}</div>
-
-      <div className="py-3 px-8 border-t shadow-md border-t-gray-200 dark:border-t-gray-700">
-        <button
-          className="flex gap-2 items-center text-sm text-slate-500 dark:text-white font-medium"
-          onClick={() => setShowModal(true)}
-        >
-          <FiPlus className="text-lg"></FiPlus>
-          Add Shipment
-        </button>
+      <div className="px-6 mt-10 flex flex-col gap-6 h-full overflow-y-scroll">
+        {children}
       </div>
+
+      <Toolbar align="left">
+        <Button theme="flat" border="none" LeftIcon={FiPlus}>
+          Add Shipment
+        </Button>
+      </Toolbar>
     </motion.div>
   );
 });
