@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "clsx": "^1.2.1",
+    "correios-brasil": "^3.0.4",
     "electron-serve": "^1.1.0",
     "electron-store": "^8.1.0",
     "framer-motion": "^10.11.2",
