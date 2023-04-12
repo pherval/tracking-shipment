@@ -1,8 +1,20 @@
 export interface CorreiosTrackShipment {
+  /**
+   * correios tracking code
+   * @example "PJ123456789BR"
+   */
   codObjeto: string;
+  /**
+   * date due to be delivered
+   * @example "2023-04-13T20:59:59"
+   */
+  dtPrevista: string;
+  /**
+   *  events of the shipment
+   */
   eventos: Evento[];
-  modalidade: Modalidade;
-  tipoPostal: TipoPostal[];
+  tipoPostal: TipoPostal;
+  modalidade?: Modalidade;
   habilitaAutoDeclaracao: boolean;
   permiteEncargoImportacao: boolean;
   habilitaPercorridaCarteiro: boolean;
@@ -13,20 +25,87 @@ export interface CorreiosTrackShipment {
 }
 
 export interface GetErrorTrackShipment {
+  /**
+   * correios tracking code
+   * @example "PJ123456789BR"
+   **/
   codObjeto: string;
+  /**
+   * error message
+   * @example SRO-020: Objeto não encontrado na base de dados dos Correios.
+   **/
   mensagem: string;
 }
 
 type Modalidade = "F";
-type TipoPostal = Object;
+
+interface TipoPostal {
+  /**
+   * category of the shipment
+   * @example SEDEX, PAC, etc
+   */
+  categoria: string;
+  /**
+   * description of the shipment
+   * @example ETIQUETA LOGICA SEDEX
+   */
+  descricao: string;
+  /**
+   * unknown
+   * @example TF
+   */
+  sigla: string;
+}
 
 export interface Evento {
-  status: string;
-  data: string;
-  hora: string;
-  origem?: string;
-  destino?: string;
-  local?: string;
+  /**
+   * TODO: map all codes
+   * @example PO
+   * @example RO
+   */
+  codigo: string;
+  descricao: string;
+  /**
+   * date of creation the event
+   * @example "2021-04-13T20:59:59"
+   */
+  dtHrCriado: string;
+  /**
+   * unknown
+   * TODO: map all types
+   * @example "01"
+   */
+  tipo: string;
+  unidade: CorreiosUnit;
+  unidadeDestino?: CorreiosUnit;
+  urlIcone: string;
+}
+
+interface CorreiosUnit {
+  endereco: Endereco;
+  /**
+   * correios unit name
+   * @example "CTCE BELO HORIZONTE"
+   */
+  nome: string;
+  /**
+   * correios unit internal code
+   * @example TCE
+   * @example Agência dos Correios
+   **/
+  tipo: string;
+}
+
+interface Endereco {
+  /**
+   * city
+   */
+  cidade: string;
+  /**
+   * state code
+   * @example "SP"
+   */
+  uf: string;
 }
 
 /**

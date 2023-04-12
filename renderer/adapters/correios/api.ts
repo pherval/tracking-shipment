@@ -6,9 +6,15 @@ import {
 
 export function trackShipment(
   codes: string[]
-): Promise<CorreiosTrackShipment | GetErrorTrackShipment> {
+): Promise<CorreiosTrackShipment[] | GetErrorTrackShipment[]> {
   return rastrearEncomendas(codes).then((res) => {
     console.log(res);
     return res;
   });
 }
+
+const isError = (
+  res: CorreiosTrackShipment | GetErrorTrackShipment
+): res is GetErrorTrackShipment => {
+  return "mensagem" in res;
+};
