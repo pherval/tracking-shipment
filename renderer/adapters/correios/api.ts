@@ -1,20 +1,17 @@
 import { rastrearEncomendas } from "correios-brasil";
 import {
   CorreiosTrackShipment,
-  GetErrorTrackShipment,
-} from "./correios.interface";
+  CorreiosTrackShipmentError,
+} from "./correios.dto";
 
-export function trackShipment(
+export async function trackShipment(
   codes: string[]
-): Promise<CorreiosTrackShipment[] | GetErrorTrackShipment[]> {
-  return rastrearEncomendas(codes).then((res) => {
-    console.log(res);
-    return res;
-  });
+): Promise<CorreiosTrackShipment[] | CorreiosTrackShipmentError[]> {
+  return rastrearEncomendas(codes);
 }
 
 const isError = (
-  res: CorreiosTrackShipment | GetErrorTrackShipment
-): res is GetErrorTrackShipment => {
+  res: CorreiosTrackShipment | CorreiosTrackShipmentError
+): res is CorreiosTrackShipmentError => {
   return "mensagem" in res;
 };
