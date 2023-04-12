@@ -4,6 +4,7 @@ export const themes = {
   secondary:
     "text-black border bg-transparent dark:text-slate-50 dark:border-slate-300",
   flat: "bg-transparent text-slate-500 dark:text-slate-300 py-0 px-0",
+  danger: "bg-red-500 text-white",
 };
 
 export type BtnTheme = keyof typeof themes;

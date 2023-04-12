@@ -4,6 +4,7 @@ import { createPortal } from "react-dom";
 import { useShortcut } from "../../hooks/use-shortcut";
 import { ModalContext } from "./context";
 import ModalContent from "./ModalContent";
+import ModalProvider from "./ModalProvider";
 
 interface ModalProps {
   show: boolean;
@@ -32,7 +33,7 @@ function Modal({
   if (!show) return null;
 
   return (
-    <ModalContext.Provider value={{ onClose, onOpen, show }}>
+    <ModalProvider onClose={onClose} onOpen={onOpen} show={show}>
       {createPortal(
         <motion.div
           ref={ref}
@@ -43,7 +44,7 @@ function Modal({
         </motion.div>,
         document.body
       )}
-    </ModalContext.Provider>
+    </ModalProvider>
   );
 }
 

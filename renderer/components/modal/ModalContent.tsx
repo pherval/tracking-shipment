@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 interface ModalContentProps {
   children: React.ReactNode;
-  title: string;
+  title?: string;
   renderActions?: React.ReactNode | React.ReactNode[];
 }
 export default function ModalContent({

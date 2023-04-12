@@ -19,14 +19,15 @@ import type { Shipment } from "../shipment.interface";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
-import { Correios } from "../adapters";
+import DeleteBtn from "../components/DeleteBtn";
+import { ModalAction } from "../components/modal";
 
 function Home() {
   const [shipments, setShipments] = useShipmentsStorage();
   const {
     selected,
     select,
-    deselect,
+    reset,
     isSelected,
     selectPrevious,
     selectLast,
@@ -62,29 +63,20 @@ function Home() {
 
   // FIXME
   useShortcut(
-    () => isSelected() && deselect(),
-    {
-      shortcut: { code: "Escape" },
-      useGlobal: false,
-    },
+    () => isSelected() && reset(),
+    { shortcut: { code: "Escape" }, useGlobal: false },
     sideBarRef?.current
   );
 
   useShortcut(
     () => (isSelected() ? selectPrevious() : selectLast()),
-    {
-      shortcut: { code: "ArrowUp" },
-      useGlobal: false,
-    },
+    { shortcut: { code: "ArrowUp" }, useGlobal: false },
     sideBarRef?.current
   );
 
   useShortcut(
     () => (isSelected() ? selectNext() : selectFirst()),
-    {
-      shortcut: { code: "ArrowDown" },
-      useGlobal: false,
-    },
+    { shortcut: { code: "ArrowDown" }, useGlobal: false },
     sideBarRef?.current
   );
 
@@ -213,15 +205,19 @@ function Home() {
                 <Tooltip id="edit-btn" />
                 <RiEditLine />
               </IconButton>
-              <IconButton
-                data-tooltip-id="delete-btn"
-                data-tooltip-content={`Delete ${selected.trackingNumber}`}
-                theme="danger"
-                onClick={deleteShipment}
+              <ModalAction
+                onConfirm={deleteShipment}
+                title={`Delete ${selected.trackingNumber} permanently ?`}
               >
-                <Tooltip id="delete-btn"></Tooltip>
-                <FiMinusCircle />
-              </IconButton>
+                <IconButton
+                  data-tooltip-id="delete-btn"
+                  theme="danger"
+                  data-tooltip-content={`Delete ${selected.trackingNumber}`}
+                >
+                  <Tooltip id="delete-btn"></Tooltip>
+                  <FiMinusCircle />
+                </IconButton>
+              </ModalAction>
             </>
           )
         }
@@ -229,7 +225,6 @@ function Home() {
         <div className="w-full flex flex-col gap-5">
           <Place label="From" place="Madrid, ES" />
           <Place label="To" place="Rio de Janeiro, BR" />
-          {data?.data}
         </div>
         <Map />
         {selected && (

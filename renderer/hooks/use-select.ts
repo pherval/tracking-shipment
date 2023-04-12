@@ -106,10 +106,7 @@ export function useSelect<T>(items: T[] = []) {
     [dispatch]
   );
 
-  const deselect = useCallback(
-    () => dispatch({ type: "deselect" }),
-    [dispatch]
-  );
+  const reset = useCallback(() => dispatch({ type: "deselect" }), [dispatch]);
   const selectNext = useCallback(() => dispatch({ type: "next" }), [dispatch]);
   const selectPrevious = useCallback(
     () => dispatch({ type: "previous" }),
@@ -150,7 +147,7 @@ export function useSelect<T>(items: T[] = []) {
     selectedIndex: state.selectedIndex,
     isSelected,
     select,
-    deselect,
+    reset,
     selectNext,
     selectPrevious,
     selectLast,
