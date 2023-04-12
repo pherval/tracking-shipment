@@ -8,8 +8,6 @@ interface SnackbarProps {
 export default function Snackbar({ position = "bottom" }: SnackbarProps) {
   const { queue, removeSnackbar } = useSnackbar();
 
-  console.log("queue", queue);
-
   return (
     <div
       className={clsx(
@@ -23,6 +21,7 @@ export default function Snackbar({ position = "bottom" }: SnackbarProps) {
           key={index}
           message={item.message}
           duration={item.duration}
+          onDismiss={() => removeSnackbar(item)}
         ></SnackbarMessage>
       ))}
     </div>

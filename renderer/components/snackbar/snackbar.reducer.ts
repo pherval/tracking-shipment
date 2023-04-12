@@ -33,7 +33,7 @@ function dispatcher(state: SnackbarState, action: Action): SnackbarState {
   }
 }
 
-export function useSnackbarContext() {
+export function useSnackbar() {
   const context = useContext(SnackbarContext);
 
   if (!context) {
@@ -43,7 +43,7 @@ export function useSnackbarContext() {
   return context;
 }
 
-export function useSnackbar() {
+export function useSnackbarReducer() {
   const [{ queue }, dispatch] = useReducer(dispatcher, {
     queue: [],
   });

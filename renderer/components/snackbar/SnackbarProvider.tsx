@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { SnackbarContext } from "./snackbar.context";
-import { useSnackbar } from "./snackbar.reducer";
+import { useSnackbarReducer } from "./snackbar.reducer";
 import Snackbar from "./Snackbar";
 
 interface SnackbarProviderProps {
@@ -8,7 +8,7 @@ interface SnackbarProviderProps {
 }
 
 export default function SnackbarProvider({ children }: SnackbarProviderProps) {
-  const value = useSnackbar();
+  const value = useSnackbarReducer();
 
   return (
     <SnackbarContext.Provider value={value}>

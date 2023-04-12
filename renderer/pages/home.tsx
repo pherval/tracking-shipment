@@ -19,7 +19,6 @@ import type { Shipment } from "../shipment.interface";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
-import DeleteBtn from "../components/DeleteBtn";
 import { ModalAction } from "../components/modal";
 import { useSnackbar } from "../components/snackbar";
 

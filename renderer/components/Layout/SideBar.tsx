@@ -9,6 +9,7 @@ import { Modal, ModalContent } from "../modal";
 import TrackingForm, { ModalFormValues } from "../TrackingForm";
 import Toolbar from "../Toolbar";
 import { Button } from "../buttons";
+import { useSnackbar } from "../snackbar";
 
 interface SideBarProps {
   children: React.ReactNode;
@@ -33,6 +34,7 @@ export default forwardRef<HTMLDivElement, SideBarProps>(function SideBar(
 ): JSX.Element | null {
   const { showSideBar } = useLayoutContext();
   const [showModal, setShowModal] = useState(false);
+  const { showSnackbar } = useSnackbar();
 
   // TODO: melhorar para outras plataformas e usar atalho local do electron
   useShortcut(() => setShowModal(true), {
@@ -54,6 +56,8 @@ export default forwardRef<HTMLDivElement, SideBarProps>(function SideBar(
       description,
       routes: [],
     });
+
+    showSnackbar("Shipment added successfully");
 
     setShowModal(false);
   };

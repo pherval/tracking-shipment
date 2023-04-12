@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Button } from "../buttons";
 import { BtnTheme } from "../buttons/themes";
 import Modal from "./Modal";
@@ -24,6 +24,14 @@ export default function ModalAction({
   actions,
 }: ModalActionProps) {
   const { close, open, isOpen } = useModal();
+  const btnRef = useRef<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      btnRef.current?.focus();
+    }
+  }, [isOpen]);
+
   return (
     <div onClick={open} className={clsx(className)}>
       {children}
@@ -36,7 +44,7 @@ export default function ModalAction({
                 <Button theme="secondary" onClick={close}>
                   Cancel
                 </Button>
-                <Button theme={actionTheme} onClick={onConfirm}>
+                <Button ref={btnRef} theme={actionTheme} onClick={onConfirm}>
                   Confirm
                 </Button>
               </>
