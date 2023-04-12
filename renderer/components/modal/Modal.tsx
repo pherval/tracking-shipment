@@ -3,6 +3,7 @@ import { MouseEventHandler, createContext, useContext, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useShortcut } from "../../hooks/use-shortcut";
 import { ModalContext } from "./context";
+import ModalContent from "./ModalContent";
 
 interface ModalProps {
   show: boolean;
@@ -11,7 +12,7 @@ interface ModalProps {
   children: React.ReactNode;
 }
 
-export default function Modal({
+function Modal({
   show,
   children,
   onClose,
@@ -45,3 +46,7 @@ export default function Modal({
     </ModalContext.Provider>
   );
 }
+
+Modal.Content = ModalContent;
+
+export default Modal;

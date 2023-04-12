@@ -1,2 +1,6 @@
-export { default as Modal } from "./Modal";
-export { default as ModalContent } from "./ModalContent";
+import Modal from "./Modal";
+import ModalContent from "./ModalContent";
+
+Modal.Content = ModalContent;
+
+export { Modal, ModalContent };
