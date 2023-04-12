@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useCallback, useContext, useReducer } from "react";
 import { SnackbarContext } from "./snackbar.context";
 
 type SnackbarMessage = {
@@ -11,29 +11,27 @@ type SnackbarState = {
 };
 
 type Action =
-  | { type: "SHOW_SNACKBAR"; message: string; duration?: number }
-  | { type: "HIDE_SNACKBAR" };
+  | { type: "SHOW_SNACKBAR"; payload: SnackbarMessage }
+  | { type: "REMOVE_SNACKBAR"; payload: SnackbarMessage };
 
 function dispatcher(state: SnackbarState, action: Action): SnackbarState {
   switch (action.type) {
     case "SHOW_SNACKBAR":
       return {
         ...state,
-        message: action.message,
-        duration: action.duration,
-        visible: true,
+        queue: state.queue.concat(action.payload),
       };
-    case "HIDE_SNACKBAR":
+    case "REMOVE_SNACKBAR":
       return {
         ...state,
-        visible: false,
+        queue: state.queue.filter((message) => message !== action.payload),
       };
     default:
       return state;
   }
 }
 
-export function useSnackbar() {
+export function useSnackbarContext() {
   const context = useContext(SnackbarContext);
 
   if (!context) {
@@ -41,4 +39,39 @@ export function useSnackbar() {
   }
 
   return context;
+}
+
+export function useSnackbar() {
+  const [state, dispatch] = useReducer(dispatcher, {
+    queue: [],
+  });
+
+  const showSnackbar = useCallback(
+    (message: string, duration?: number) => {
+      dispatch({
+        type: "SHOW_SNACKBAR",
+        payload: {
+          message,
+          duration,
+        },
+      });
+    },
+    [dispatch]
+  );
+
+  const removeSnackbar = useCallback(
+    (snackbar: SnackbarMessage) => {
+      dispatch({
+        type: "REMOVE_SNACKBAR",
+        payload: snackbar,
+      });
+    },
+    [dispatch]
+  );
+
+  return {
+    queue: state.queue,
+    showSnackbar,
+    removeSnackbar,
+  };
 }
