@@ -17,6 +17,8 @@ type Action =
 function dispatcher(state: SnackbarState, action: Action): SnackbarState {
   switch (action.type) {
     case "SHOW_SNACKBAR":
+      console.log("show snackbar", action);
+
       return {
         ...state,
         queue: state.queue.concat(action.payload),
@@ -27,7 +29,7 @@ function dispatcher(state: SnackbarState, action: Action): SnackbarState {
         queue: state.queue.filter((message) => message !== action.payload),
       };
     default:
-      return state;
+      throw new Error("Invalid action type for snackbar ");
   }
 }
 
@@ -42,7 +44,7 @@ export function useSnackbarContext() {
 }
 
 export function useSnackbar() {
-  const [state, dispatch] = useReducer(dispatcher, {
+  const [{ queue }, dispatch] = useReducer(dispatcher, {
     queue: [],
   });
 
@@ -70,7 +72,7 @@ export function useSnackbar() {
   );
 
   return {
-    queue: state.queue,
+    queue,
     showSnackbar,
     removeSnackbar,
   };

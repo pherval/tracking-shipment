@@ -13,7 +13,7 @@ export default function SnackbarProvider({ children }: SnackbarProviderProps) {
   return (
     <SnackbarContext.Provider value={value}>
       {children}
-      <Snackbar></Snackbar>
+      <Snackbar />
     </SnackbarContext.Provider>
   );
 }

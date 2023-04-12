@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
-import { AiOutlineClose } from "react-icons/ai";
+import { AnimatePresence, motion } from "framer-motion";
+import { IoMdClose as CloseIcon } from "react-icons/io";
 import { useDebounce } from "../../hooks";
 import { IconButton } from "../buttons";
 
@@ -25,18 +25,24 @@ export default function SnackbarMessage({
   );
 
   return (
-    <motion.div
-      variants={{ open: { opacity: 1, x: 0 }, closed: { opacity: 0, x: -100 } }}
-      initial="open"
-      whileInView="closed"
-      className="p-5 bg-slate-800 flex flex-col justify-between gap-5 text-white rounded-lg"
-    >
-      {message}
-      {dismissable && (
-        <IconButton onClick={onDismiss}>
-          <AiOutlineClose></AiOutlineClose>
-        </IconButton>
-      )}
-    </motion.div>
+    <AnimatePresence>
+      <motion.div
+        variants={{
+          open: { opacity: 1, x: 0 },
+          closed: { opacity: 0, x: -100 },
+        }}
+        initial="closed"
+        whileInView="open"
+        exit="closed"
+        className="p-2 bg-gray-700 text-sm flex justify-between gap-5 text-white rounded"
+      >
+        {message}
+        {dismissable && (
+          <IconButton theme="light" size="sm" onClick={onDismiss}>
+            <CloseIcon></CloseIcon>
+          </IconButton>
+        )}
+      </motion.div>
+    </AnimatePresence>
   );
 }

@@ -21,6 +21,7 @@ import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
 import DeleteBtn from "../components/DeleteBtn";
 import { ModalAction } from "../components/modal";
+import { useSnackbar } from "../components/snackbar";
 
 function Home() {
   const [shipments, setShipments] = useShipmentsStorage();
@@ -35,6 +36,7 @@ function Home() {
     selectFirst,
   } = useSelect(shipments);
   const sideBarRef = useRef<HTMLDivElement>(null);
+  const { showSnackbar } = useSnackbar();
 
   // const { isLoading, data, error } = useQuery(
   //   ["correios-rastreio"],
@@ -105,6 +107,7 @@ function Home() {
             (item) => item.trackingNumber !== selected.trackingNumber
           ) ?? []
       );
+      showSnackbar("Shipment deleted", 2_000);
 
       // TODO: think about it!
       setTimeout(() => {
