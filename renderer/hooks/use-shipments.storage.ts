@@ -17,3 +17,9 @@ export function useShipmentsStorage(
 
   return [shipments, setShipments];
 }
+
+export function useShipmentById(id: string): Shipment | undefined {
+  const [shipments] = useShipmentsStorage();
+
+  return shipments.find((shipment) => shipment.id === id);
+}

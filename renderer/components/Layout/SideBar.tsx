@@ -82,7 +82,10 @@ export default forwardRef<HTMLDivElement, SideBarProps>(function SideBar(
         {children}
       </div>
 
-      <Toolbar align="left">
+      <Toolbar
+        align="left"
+        className="border-r border-r-gray-200 dark:border-r-gray-800"
+      >
         <Button
           theme="flat"
           border="none"

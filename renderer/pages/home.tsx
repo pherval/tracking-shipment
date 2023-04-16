@@ -53,14 +53,9 @@ function Home() {
   const route = useRouter();
   const currentId = route.query.id;
 
-  useEffect(() => {
-    if (currentId) {
-      select((f) => f.trackingNumber === currentId);
-    }
-  }, [currentId, select]);
-
-  const selectItem = (item: Shipment) =>
-    route.replace({ query: { id: item.trackingNumber } });
+  const selectItem = (item: Shipment) => {
+    select((f) => f.trackingNumber === item.trackingNumber);
+  };
 
   // FIXME
   useShortcut(
@@ -214,6 +209,7 @@ function Home() {
                 <IconButton
                   data-tooltip-id="delete-btn"
                   theme="danger"
+                  size="sm"
                   data-tooltip-content={`Delete ${selected.trackingNumber}`}
                 >
                   <Tooltip id="delete-btn"></Tooltip>
@@ -244,7 +240,7 @@ function Home() {
                 ))}
             </div>
 
-            <Link href="/route">
+            <Link href={"/details/" + selected.id}>
               <a>
                 <Button
                   theme="dark"

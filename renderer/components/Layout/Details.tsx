@@ -75,7 +75,7 @@ export default function Details({
       )}
     >
       <ThemeModeButton />
-      <div className="py-16 px-8 grow flex flex-col items-center gap-10 max-w-7xl mx-auto overflow-y-scroll">
+      <div className="py-16 px-8 grow flex flex-col items-center gap-10 max-w-7xl overflow-auto">
         <h1 className="text-center text-xl font-bold">{title}</h1>
         {children}
       </div>
