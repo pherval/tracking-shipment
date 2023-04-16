@@ -27,7 +27,7 @@ export interface CorreiosTrackShipment {
 export interface CorreiosTrackShipmentError {
   /**
    * correios tracking code
-   * @example "PJ123456789BR"
+   * @example PJ123456789BR
    **/
   codObjeto: string;
   /**

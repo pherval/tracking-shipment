@@ -1,6 +1,6 @@
 export interface TrackingShipment {
   code: string;
-  dueDate: Date;
+  dueDate: Date | null;
   /**
    * Order by creation date
    */

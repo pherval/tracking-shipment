@@ -1,4 +1,4 @@
-import { map, partition } from "ramda";
+import { head, map, partition } from "ramda";
 import { tracker } from "./adapter";
 import { transformTracking } from "./api.mapper";
 import type {
@@ -6,30 +6,28 @@ import type {
   CorreiosTrackShipmentError,
 } from "./correios.dto";
 import type { TrackingShipment } from "./tracking.interface";
+import { CorreiosError } from "./correios.error";
 
-type Response = {
-  trackings: TrackingShipment[];
-  errors?: AggregateError;
-};
+export async function trackShipment(codes: string): Promise<TrackingShipment> {
+  const res = await tracker([codes]);
 
-export async function trackShipments(codes: string[]): Promise<Response> {
-  try {
-    const res = await tracker(codes);
+  const [errors, data] = partition(isError, res) as [
+    CorreiosTrackShipmentError[],
+    CorreiosTrackShipment[]
+  ];
 
-    const [errors, data] = partition(isError, res) as [
-      CorreiosTrackShipmentError[],
-      CorreiosTrackShipment[]
-    ];
-
-    return {
-      trackings: map(transformTracking, data),
-      errors: errors.some(isError)
-        ? new AggregateError(errors.map((e) => new Error(e.mensagem)))
-        : undefined,
-    };
-  } catch (err) {
-    throw new Error("unkown tracking error", { cause: err });
+  if (errors.some(isError)) {
+    throw new CorreiosError(errors.find(isError)?.mensagem);
   }
+
+  const shipments = map(transformTracking, data);
+
+  const shipment = head(shipments);
+  if (!shipment) {
+    throw new CorreiosError("no tracking found");
+  }
+
+  return shipment;
 }
 
 const isError = (
